@@ -126,6 +126,10 @@ public class TablaBusqueda extends JPanel {
 	public int getFilaSeleccionada () {
 		return table.convertRowIndexToModel(table.getSelectedRow());
 	}
+	
+	public boolean hayFilaSeleccionada() {
+		return table.getSelectedRow() > -1;
+	}
 
 	public Docente getDocenteSeleccionado() {
 		return docentes.getDocentes().get(getFilaSeleccionada());

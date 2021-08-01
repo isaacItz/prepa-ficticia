@@ -53,7 +53,7 @@ public class VistaPrincipal extends JFrame {
 		if (!cargarObjetos()) {
 			this.grupos = new Grupos();
 			this.docentes = new Docentes();
-			System.out.println("no se pudieron cargar los datos");
+			System.err.println("no se pudieron cargar los datos");
 		}
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

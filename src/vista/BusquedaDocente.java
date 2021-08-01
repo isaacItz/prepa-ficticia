@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import modelo.Docentes;
+import modelo.Utileria;
 
 public class BusquedaDocente extends JDialog {
 
@@ -21,7 +22,7 @@ public class BusquedaDocente extends JDialog {
 	public BusquedaDocente(Docentes docentes) {
 		this.docentes = docentes;
 		setTitle("Consulta de Docentes");
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 595, 383);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -39,9 +40,14 @@ public class BusquedaDocente extends JDialog {
 				JButton okButton = new JButton("Modificar");
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
-						RegistroDocente modDoc = new RegistroDocente(tabla.getDocenteSeleccionado());
-						modDoc.setTitle("Modificacion de Docente");
-						modDoc.setVisible(true);
+						if (tabla.hayFilaSeleccionada()) {
+							RegistroDocente modDoc = new RegistroDocente(tabla.getDocenteSeleccionado());
+							modDoc.setTitle("Modificacion de Docente");
+							modDoc.setVisible(true);
+
+						} else {
+							Utileria.mensaje("No hay un docente seleccionado");
+						}
 					}
 				});
 				okButton.setActionCommand("OK");
