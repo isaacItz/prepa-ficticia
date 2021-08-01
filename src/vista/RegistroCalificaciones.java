@@ -15,6 +15,7 @@ import javax.swing.border.EmptyBorder;
 import modelo.Alumno;
 import modelo.Grupo;
 import modelo.Grupos;
+import modelo.Utileria;
 
 public class RegistroCalificaciones extends JDialog {
 
@@ -24,6 +25,9 @@ public class RegistroCalificaciones extends JDialog {
 	private JComboBox<Grupo> comboGrupo;
 	private DefaultComboBoxModel<Grupo> model;
 	private Grupo grupo;
+	private JButton okButton;
+	private JPanel buttonPane;
+	private JButton cancelButton;
 
 	public RegistroCalificaciones(Grupos grupos) {
 		this.grupos = grupos;
@@ -46,14 +50,14 @@ public class RegistroCalificaciones extends JDialog {
 		contentPanel.setLayout(new BorderLayout(0, 0));
 		contentPanel.add(tabla, BorderLayout.CENTER);
 		{
-			JPanel buttonPane = new JPanel();
+			buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				JButton okButton = new JButton("OK");
+				okButton = new JButton("OK");
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
-						modAlumno();
+						guardarCalificaciones();
 					}
 				});
 				okButton.setActionCommand("OK");
@@ -61,7 +65,7 @@ public class RegistroCalificaciones extends JDialog {
 				getRootPane().setDefaultButton(okButton);
 			}
 			{
-				JButton cancelButton = new JButton("Cancel");
+				cancelButton = new JButton("Cancel");
 				cancelButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
 						dispose();
@@ -82,12 +86,19 @@ public class RegistroCalificaciones extends JDialog {
 		model.addAll(grupos.getGrupos());
 	}
 
-	private void modAlumno() {
-		if (tabla.hayFilaSeleccionada()) {
-			Alumno a = tabla.getAlumnoSeleccionado();
-			RegistroAlumno modA = new RegistroAlumno(grupos, true);
-			modA.setAlumno(a);
-			modA.setVisible(true);
+	private void guardarCalificaciones() {
+		if (tabla.validarCalificaciones()) {
+			tabla.registrarCalificaciones();
+			Utileria.mensaje("Calificaciones registradas");
+			dispose();
+
+		} else {
+			Utileria.mensaje("Calificaciones deben ser enteros mayores a 0");
 		}
+	}
+	
+	public void soloConsultar() {
+		buttonPane.remove(okButton);
+		cancelButton.setText("Salir");
 	}
 }

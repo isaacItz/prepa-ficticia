@@ -233,7 +233,6 @@ public class TablaBusqueda extends JPanel {
 			ArrayList<Double> fila = new ArrayList<>();
 			for (int j = 0; j < grupo.getParciales().getCantidad(); j++) {
 				if (!Utileria.esDouble(table.getValueAt(i, 7 + j)) && Utileria.getDecimal() < 0) {
-					Utileria.mensaje("Calificaciones deben ser enteros mayores a 0");
 					return false;
 				} else {
 					fila.add(Utileria.getDecimal());

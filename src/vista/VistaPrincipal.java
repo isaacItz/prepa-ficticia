@@ -129,6 +129,7 @@ public class VistaPrincipal extends JFrame {
 				if (grupos.hayGrupos()) {
 					if (grupos.hayAlumnos()) {
 						BusquedaAlumnos busqA = new BusquedaAlumnos(grupos);
+						busqA.setVisible(true);
 					} else {
 						Utileria.mensaje("No hay Alumnos registrados");
 					}
@@ -143,9 +144,40 @@ public class VistaPrincipal extends JFrame {
 		menuBar.add(mnCalificaciones);
 
 		JMenuItem mntmRegistrar_2 = new JMenuItem("Registrar");
+		mntmRegistrar_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if (grupos.hayGrupos()) {
+					if (grupos.hayAlumnos()) {
+						RegistroCalificaciones regCal = new RegistroCalificaciones(grupos);
+						regCal.setVisible(true);
+
+					} else {
+						Utileria.mensaje("No hay Alumnos registrados");
+					}
+				} else {
+					Utileria.mensaje("No hay grupos registrados;");
+				}
+			}
+		});
 		mnCalificaciones.add(mntmRegistrar_2);
 
 		JMenuItem mntmConsultar = new JMenuItem("Consultar");
+		mntmConsultar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if (grupos.hayGrupos()) {
+					if (grupos.hayAlumnos()) {
+						RegistroCalificaciones regCal = new RegistroCalificaciones(grupos);
+						regCal.soloConsultar();
+						regCal.setVisible(true);
+
+					} else {
+						Utileria.mensaje("No hay Alumnos registrados");
+					}
+				} else {
+					Utileria.mensaje("No hay grupos registrados;");
+				}
+			}
+		});
 		mnCalificaciones.add(mntmConsultar);
 
 		JMenu mnAdeudos = new JMenu("Adeudos");
