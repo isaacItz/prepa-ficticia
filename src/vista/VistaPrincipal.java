@@ -159,6 +159,7 @@ public class VistaPrincipal extends JFrame {
 				// if (!new File("P").exists())
 				crearStream("grupos", grupos);
 				crearStream("docentes", docentes);
+				System.out.println("bye");
 				System.exit(0);
 
 			}
@@ -184,12 +185,14 @@ public class VistaPrincipal extends JFrame {
 		return coleccion;
 	}
 
-	private void crearStream(String nombre, Object o) {
+	private <T> void crearStream(String nombre, T o) {
 		try {
-			File archivo = new File("objetos/objeto-" + nombre + "");
-			archivo.createNewFile();
-			creadorDeFlujo = new ObjectOutputStream(new FileOutputStream(archivo));
+			FileOutputStream archivo = new FileOutputStream("objetos/objeto-" + nombre + "");
+			// archivo.flush();
+			creadorDeFlujo = new ObjectOutputStream((archivo));
 			creadorDeFlujo.writeObject(o);
+			creadorDeFlujo.close();
+			archivo.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

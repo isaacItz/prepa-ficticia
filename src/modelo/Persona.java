@@ -1,8 +1,9 @@
 package modelo;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class Persona {
+public class Persona implements Serializable{
 
 	private String nombre;
 	private String paterno;
