@@ -9,6 +9,7 @@ public class Persona {
 	private String materno;
 	private LocalDate fechaNac;
 	private char sexo;
+	private String curp;
 
 	public Persona() {
 		super();
@@ -22,6 +23,14 @@ public class Persona {
 		this.materno = materno;
 		this.fechaNac = fechaNac;
 		this.sexo = sexo;
+	}
+
+	public String getCurp() {
+		return curp;
+	}
+
+	public void setCurp(String curp) {
+		this.curp = curp;
 	}
 
 	public String getNombre() {

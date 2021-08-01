@@ -6,6 +6,7 @@ import java.util.List;
 public class Grupo {
 	private Docente docente;
 	private List<Alumno> alumnos;
+	private Parciales parciales;
 	private int semestre;
 	private char letra;
 
@@ -16,10 +17,19 @@ public class Grupo {
 
 	public Grupo(Docente docente, List<Alumno> alumnos, int semestre, char letra) {
 		super();
+		this.parciales = new Parciales();
 		this.docente = docente;
 		this.alumnos = alumnos;
 		this.semestre = semestre;
 		this.letra = letra;
+	}
+
+	public Parciales getParciales() {
+		return parciales;
+	}
+
+	public void setParciales(Parciales parciales) {
+		this.parciales = parciales;
 	}
 
 	public void agregarAlumno(Alumno a) {
