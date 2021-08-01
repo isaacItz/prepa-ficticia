@@ -18,6 +18,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import modelo.Docentes;
 import modelo.Grupos;
 
 public class VistaPrincipal extends JFrame {
@@ -26,6 +27,7 @@ public class VistaPrincipal extends JFrame {
 	private ObjectOutputStream creadorDeFlujo;
 	private ObjectInputStream lectorDeFlujo;
 	private Grupos grupos;
+	private Docentes docentes;
 
 	/**
 	 * Launch the application.
@@ -47,8 +49,10 @@ public class VistaPrincipal extends JFrame {
 	 * Create the frame.
 	 */
 	public VistaPrincipal() {
+		setTitle("Preparatoria");
 		if (!cargarObjetos()) {
 			this.grupos = new Grupos();
+			this.docentes = new Docentes();
 			System.out.println("no se pudieron cargar los datos");
 		}
 
@@ -57,17 +61,35 @@ public class VistaPrincipal extends JFrame {
 
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
-		
+
 		JMenu mnDocentes = new JMenu("Docentes");
 		menuBar.add(mnDocentes);
-		
+
 		JMenuItem mntmRegistrar_4 = new JMenuItem("Registrar");
+		mntmRegistrar_4.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				RegistroDocente vistaDocentes = new RegistroDocente(docentes);
+				vistaDocentes.setVisible(true);
+			}
+		});
 		mnDocentes.add(mntmRegistrar_4);
-		
+
 		JMenuItem mntmModificar_1 = new JMenuItem("Modificar");
+		mntmModificar_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+
+			}
+		});
 		mnDocentes.add(mntmModificar_1);
-		
+
 		JMenuItem mntmConsultar_3 = new JMenuItem("Consultar");
+		mntmConsultar_3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				BusquedaDocente doc = new BusquedaDocente(docentes);
+				doc.setVisible(true);
+				doc.setLocationRelativeTo(null);
+			}
+		});
 		mnDocentes.add(mntmConsultar_3);
 
 		JMenu mnGrupos = new JMenu("Grupos");
@@ -76,7 +98,7 @@ public class VistaPrincipal extends JFrame {
 		JMenuItem mntmRegistrar_3 = new JMenuItem("Registrar");
 		mntmRegistrar_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
+
 			}
 		});
 		mnGrupos.add(mntmRegistrar_3);
@@ -136,6 +158,7 @@ public class VistaPrincipal extends JFrame {
 
 				// if (!new File("P").exists())
 				crearStream("grupos", grupos);
+				crearStream("docentes", docentes);
 				System.exit(0);
 
 			}
@@ -145,7 +168,7 @@ public class VistaPrincipal extends JFrame {
 	}
 
 	private <T> T leerStream(String nom, T coleccion) {
-		File archivo = new File("objeto-" + nom + "");
+		File archivo = new File("objetos/objeto-" + nom + "");
 		if (archivo.exists()) {
 			try {
 				lectorDeFlujo = new ObjectInputStream(new FileInputStream(archivo));
@@ -163,7 +186,7 @@ public class VistaPrincipal extends JFrame {
 
 	private void crearStream(String nombre, Object o) {
 		try {
-			File archivo = new File("objeto-" + nombre + "");
+			File archivo = new File("objetos/objeto-" + nombre + "");
 			archivo.createNewFile();
 			creadorDeFlujo = new ObjectOutputStream(new FileOutputStream(archivo));
 			creadorDeFlujo.writeObject(o);
@@ -174,6 +197,9 @@ public class VistaPrincipal extends JFrame {
 
 	private boolean cargarObjetos() {
 		grupos = leerStream("grupos", grupos);
+		docentes = leerStream("docentes", docentes);
+		if (docentes == null)
+			return false;
 		if (grupos == null)
 			return false;
 		return true;

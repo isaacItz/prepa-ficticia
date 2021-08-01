@@ -74,6 +74,58 @@ public class Persona {
 	}
 
 	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((curp == null) ? 0 : curp.hashCode());
+		result = prime * result + ((fechaNac == null) ? 0 : fechaNac.hashCode());
+		result = prime * result + ((materno == null) ? 0 : materno.hashCode());
+		result = prime * result + ((nombre == null) ? 0 : nombre.hashCode());
+		result = prime * result + ((paterno == null) ? 0 : paterno.hashCode());
+		result = prime * result + sexo;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Persona other = (Persona) obj;
+		if (curp == null) {
+			if (other.curp != null)
+				return false;
+		} else if (!curp.equals(other.curp))
+			return false;
+		if (fechaNac == null) {
+			if (other.fechaNac != null)
+				return false;
+		} else if (!fechaNac.equals(other.fechaNac))
+			return false;
+		if (materno == null) {
+			if (other.materno != null)
+				return false;
+		} else if (!materno.equals(other.materno))
+			return false;
+		if (nombre == null) {
+			if (other.nombre != null)
+				return false;
+		} else if (!nombre.equals(other.nombre))
+			return false;
+		if (paterno == null) {
+			if (other.paterno != null)
+				return false;
+		} else if (!paterno.equals(other.paterno))
+			return false;
+		if (sexo != other.sexo)
+			return false;
+		return true;
+	}
+
+	@Override
 	public String toString() {
 		return "Persona [nombre=" + nombre + ", paterno=" + paterno + ", materno=" + materno + ", fechaNac=" + fechaNac
 				+ ", sexo=" + sexo + "]";

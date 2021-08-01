@@ -1,12 +1,21 @@
 package modelo;
 
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
+
+import com.toedter.calendar.JDateChooser;
 
 public class Utileria {
 
@@ -69,5 +78,49 @@ public class Utileria {
 			return false;
 		}
 	}
+	public static boolean validarCaja(JTextField caja) {
+		return !caja.getText().isEmpty();
+	}
 
+	public static boolean horaValida(JTextField caja) {
+		try {
+			int hora = Integer.parseInt(caja.getText().split(":")[0]);
+			int minutos = Integer.parseInt(caja.getText().split(":")[1]);
+			return hora < 25 && minutos < 60;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
+	public static LocalTime getHora(JTextField caja) {
+		int hora = Integer.parseInt(caja.getText().split(":")[0]);
+		int minutos = Integer.parseInt(caja.getText().split(":")[1]);
+		return LocalTime.of(hora, minutos);
+	}
+
+	public static boolean validarCajaFecha(JDateChooser dateChooser) {
+		return toLocalDate(dateChooser.getDate()).isBefore(LocalDate.now());
+	}
+
+	public static LocalDate toLocalDate(Date date) {
+		return Instant.ofEpochMilli(date.getTime()).atZone(ZoneId.systemDefault()).toLocalDate();
+	}
+
+	public static Date toDate(LocalDate date) {
+		return Date.from(date.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+	}
+
+	public static void mensaje(String mensaje) {
+		JOptionPane.showMessageDialog(null, mensaje);
+	}
+
+	public static String formatearFecha(Date fecha) {
+		SimpleDateFormat sd = new SimpleDateFormat("dd/MM/yyyy");
+		return sd.format(fecha);
+	}
+
+	public static String formatearFecha(LocalDate fecha) {
+		DateTimeFormatter sd = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+		return sd.format(fecha);
+	}
 }

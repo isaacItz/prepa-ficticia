@@ -1,6 +1,7 @@
 package vista;
 
 import java.awt.GridLayout;
+import java.time.LocalDate;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JLabel;
@@ -10,6 +11,10 @@ import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
 import com.toedter.calendar.JDateChooser;
+
+import modelo.Docente;
+import modelo.Persona;
+import modelo.Utileria;
 
 public class FormularioPersona extends JPanel {
 	private JTextField cajaNombre;
@@ -82,6 +87,53 @@ public class FormularioPersona extends JPanel {
 		grupo.add(radioFemenino);
 		grupo.add(radioMasculino);
 
+	}
+
+	public boolean validarPanel() {
+		if (cajaNombre.getText().isEmpty())
+			return false;
+		if (cajaPaterno.getText().isEmpty())
+			return false;
+		if (cajaMaterno.getText().isEmpty())
+			return false;
+		if (cajaCurp.getText().isEmpty())
+			return false;
+		if (dateChooser.getDate() == null)
+			return false;
+		if (!radioFemenino.isSelected() && !radioMasculino.isSelected())
+			return false;
+		return true;
+	}
+
+	public Persona getPersona() {
+		Persona p = new Persona();
+		p.setNombre(cajaNombre.getText());
+		p.setPaterno(cajaPaterno.getText());
+		p.setMaterno(cajaMaterno.getText());
+		if (radioMasculino.isSelected())
+			p.setSexo('M');
+		else
+			p.setSexo('F');
+		LocalDate fecha = Utileria.toLocalDate(dateChooser.getDate());
+		p.setFechaNac(fecha);
+		p.setCurp(cajaCurp.getText());
+		return p;
+	}
+
+	public Docente getDocente() {
+		Docente p = new Docente();
+		p.setNombre(cajaNombre.getText());
+		p.setPaterno(cajaPaterno.getText());
+		p.setMaterno(cajaMaterno.getText());
+		if (radioMasculino.isSelected())
+			p.setSexo('M');
+		else
+			p.setSexo('F');
+		LocalDate fecha = Utileria.toLocalDate(dateChooser.getDate());
+		p.setFechaNac(fecha);
+		p.setCurp(cajaCurp.getText());
+		System.out.println(p);
+		return p;
 	}
 
 	public JTextField getCajaNombre() {
