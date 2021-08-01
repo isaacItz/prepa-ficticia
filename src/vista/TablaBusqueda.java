@@ -18,9 +18,16 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
+import modelo.Alumno;
 import modelo.Docente;
 import modelo.Docentes;
+import modelo.Grupo;
+import modelo.Grupos;
 import modelo.Utileria;
+import java.awt.GridLayout;
+import javax.swing.JComboBox;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class TablaBusqueda extends JPanel {
 	private JTextField textField;
@@ -29,6 +36,11 @@ public class TablaBusqueda extends JPanel {
 	private DefaultTableModel modelo;
 	private TableRowSorter<TableModel> sorter;
 	private Docentes docentes;
+	private Grupo grupo;
+	private JPanel panel_1;
+	private JPanel panel_2;
+	private JLabel lblGrupo;
+	private JComboBox<Grupo> comboGrupo;
 
 	/**
 	 * Create the panel.
@@ -37,8 +49,28 @@ public class TablaBusqueda extends JPanel {
 		setBorder(new TitledBorder(null, "Consulta", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		setLayout(new BorderLayout(0, 0));
 
+		JScrollPane scrollPane = new JScrollPane();
+		add(scrollPane, BorderLayout.CENTER);
+
+		table = new JTable();
+		scrollPane.setViewportView(table);
+
+		panel_1 = new JPanel();
+		add(panel_1, BorderLayout.NORTH);
+		panel_1.setLayout(new GridLayout(0, 1, 0, 0));
+
+		panel_2 = new JPanel();
+		panel_1.add(panel_2);
+
+		lblGrupo = new JLabel("Grupo:");
+		panel_2.add(lblGrupo);
+
+		comboGrupo = new JComboBox<>();
+		
+		panel_2.add(comboGrupo);
+
 		JPanel panel = new JPanel();
-		add(panel, BorderLayout.NORTH);
+		panel_1.add(panel);
 
 		etiquetaTexto = new JLabel("Ingrese el nombre:");
 		panel.add(etiquetaTexto);
@@ -64,12 +96,6 @@ public class TablaBusqueda extends JPanel {
 		panel.add(textField);
 		textField.setColumns(15);
 
-		JScrollPane scrollPane = new JScrollPane();
-		add(scrollPane, BorderLayout.CENTER);
-
-		table = new JTable();
-		scrollPane.setViewportView(table);
-
 	}
 
 	public JTextField getTextField() {
@@ -84,7 +110,7 @@ public class TablaBusqueda extends JPanel {
 		this.etiquetaTexto.setText(etiquetaTexto);
 	}
 
-	public void setTabla(Docentes docentes) {
+	public void setTablaDocentes(Docentes docentes) {
 		this.docentes = docentes;
 		List<String[]> mat = new ArrayList<>();
 		for (Docente d : docentes.getDocentes()) {
@@ -100,12 +126,31 @@ public class TablaBusqueda extends JPanel {
 		}
 		int rows = mat.size();
 		int columns = 6;
-		iniciarTabla(rows, columns);
-		modelo.setDataVector(mat.toArray(new String[rows][columns]),
+		iniciarTabla(rows, columns, mat.toArray(new String[rows][columns]),
 				new String[] { "Nombre", "Ap. Paterno", "Ap. Materno", "CURP", "Fecha Nac.", "Sexo" });
 	}
 
-	public void iniciarTabla(int rows, int cols) {
+	public void setTablaAlumnos(Grupo grupo) {
+		this.grupo = grupo;
+		List<String[]> mat = new ArrayList<>();
+		for (Alumno a : grupo.getAlumnos()) {
+			String[] fila = new String[6];
+			fila[0] = String.valueOf(a.getMatricula());
+			fila[1] = a.getStatus();
+			fila[2] = a.getNombreCompleto();
+			fila[3] = a.getCurp();
+			fila[4] = Utileria.formatearFecha(a.getFechaNac());
+			fila[5] = String.valueOf(a.getSexo());
+			fila[6] = a.getGrupo().getNombreGrupo();
+			mat.add(fila);
+		}
+		int rows = mat.size();
+		int columns = 7;
+		iniciarTabla(rows, columns, mat.toArray(new String[rows][columns]),
+				new String[] { "Matricula", "Status", "Nombre", "CURP", "Fecha Nac.", "Sexo", "Grupo" });
+	}
+
+	public void iniciarTabla(int rows, int cols, String[][] data, String[] cabecera) {
 		modelo = new DefaultTableModel(rows, cols) {
 			public Class getColumnClass(int column) {
 				Class returnValue;
@@ -118,15 +163,16 @@ public class TablaBusqueda extends JPanel {
 			}
 		};
 
+		modelo.setDataVector(data, cabecera);
 		table.setModel(modelo);
 		sorter = new TableRowSorter<TableModel>(modelo);
 		table.setRowSorter(sorter);
 	}
-	
-	public int getFilaSeleccionada () {
+
+	public int getFilaSeleccionada() {
 		return table.convertRowIndexToModel(table.getSelectedRow());
 	}
-	
+
 	public boolean hayFilaSeleccionada() {
 		return table.getSelectedRow() > -1;
 	}
@@ -134,6 +180,11 @@ public class TablaBusqueda extends JPanel {
 	public Docente getDocenteSeleccionado() {
 		return docentes.getDocentes().get(getFilaSeleccionada());
 	}
+
+	public Alumno getAlumnoSeleccionado() {
+		return grupo.getAlumnos().get(getFilaSeleccionada());
+	}
+
 	private void filtro() {
 		String text = textField.getText();
 		if (text.length() == 0) {
@@ -147,4 +198,7 @@ public class TablaBusqueda extends JPanel {
 		}
 	}
 
+	public JComboBox<Grupo> getComboGrupo() {
+		return comboGrupo;
+	}
 }

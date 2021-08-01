@@ -5,49 +5,54 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import modelo.Docentes;
-import modelo.Utileria;
+import modelo.Alumno;
+import modelo.Grupo;
+import modelo.Grupos;
 
-public class BusquedaDocente extends JDialog {
+public class BusquedaAlumnos extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
-	private Docentes docentes;
 	private TablaBusqueda tabla;
+	private Grupos grupos;
+	private JComboBox<Grupo> comboGrupo;
+	private DefaultComboBoxModel<Grupo> model;
+	private Grupo grupo;
 
-	public BusquedaDocente(Docentes docentes) {
-		this.docentes = docentes;
-		setTitle("Consulta de Docentes");
-		setBounds(100, 100, 595, 383);
+	public BusquedaAlumnos() {
+		model = new DefaultComboBoxModel<>();
+		tabla = new TablaBusqueda();
+		comboGrupo = tabla.getComboGrupo();
+		comboGrupo.setModel(model);
+		llenarModelo();
+		comboGrupo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				setGrupo();
+			}
+		});
+
+		setModal(true);
+		setBounds(100, 100, 554, 385);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(new BorderLayout(0, 0));
-		tabla = new TablaBusqueda();
-		tabla.setTablaDocentes(this.docentes);
-		tabla.setEtiquetaTexto("Busqueda:");
-
 		contentPanel.add(tabla, BorderLayout.CENTER);
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				JButton okButton = new JButton("Modificar");
+				JButton okButton = new JButton("OK");
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
-						if (tabla.hayFilaSeleccionada()) {
-							RegistroDocente modDoc = new RegistroDocente(tabla.getDocenteSeleccionado());
-							modDoc.setTitle("Modificacion de Docente");
-							modDoc.setVisible(true);
-
-						} else {
-							Utileria.mensaje("No hay un docente seleccionado");
-						}
+						modAlumno();
 					}
 				});
 				okButton.setActionCommand("OK");
@@ -55,7 +60,7 @@ public class BusquedaDocente extends JDialog {
 				getRootPane().setDefaultButton(okButton);
 			}
 			{
-				JButton cancelButton = new JButton("Salir");
+				JButton cancelButton = new JButton("Cancel");
 				cancelButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
 						dispose();
@@ -65,6 +70,23 @@ public class BusquedaDocente extends JDialog {
 				buttonPane.add(cancelButton);
 			}
 		}
+		setLocationRelativeTo(null);
 	}
 
+	private void setGrupo() {
+		grupo = (Grupo) comboGrupo.getSelectedItem();
+	}
+
+	private void llenarModelo() {
+		model.addAll(grupos.getGrupos());
+	}
+
+	private void modAlumno() {
+		if (tabla.hayFilaSeleccionada()) {
+			Alumno a = tabla.getAlumnoSeleccionado();
+			RegistroAlumno modA = new RegistroAlumno(grupos, true);
+			modA.setAlumno(a);
+			modA.setVisible(true);
+		}
+	}
 }

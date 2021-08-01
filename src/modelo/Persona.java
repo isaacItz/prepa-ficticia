@@ -3,7 +3,7 @@ package modelo;
 import java.io.Serializable;
 import java.time.LocalDate;
 
-public class Persona implements Serializable{
+public class Persona implements Serializable {
 
 	private String nombre;
 	private String paterno;
@@ -56,6 +56,10 @@ public class Persona implements Serializable{
 
 	public void setMaterno(String materno) {
 		this.materno = materno;
+	}
+
+	public String getNombreCompleto() {
+		return nombre.concat(" ").concat(paterno).concat(" ").concat(materno);
 	}
 
 	public LocalDate getFechaNac() {
