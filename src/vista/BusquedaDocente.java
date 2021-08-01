@@ -16,6 +16,7 @@ public class BusquedaDocente extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
 	private Docentes docentes;
+	private TablaBusqueda tabla;
 
 	public BusquedaDocente(Docentes docentes) {
 		this.docentes = docentes;
@@ -25,7 +26,7 @@ public class BusquedaDocente extends JDialog {
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(new BorderLayout(0, 0));
-		TablaBusqueda tabla = new TablaBusqueda();
+		tabla = new TablaBusqueda();
 		tabla.setTabla(this.docentes);
 		tabla.setEtiquetaTexto("Busqueda:");
 
@@ -38,6 +39,9 @@ public class BusquedaDocente extends JDialog {
 				JButton okButton = new JButton("Modificar");
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
+						RegistroDocente modDoc = new RegistroDocente(tabla.getDocenteSeleccionado());
+						modDoc.setTitle("Modificacion de Docente");
+						modDoc.setVisible(true);
 					}
 				});
 				okButton.setActionCommand("OK");

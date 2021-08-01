@@ -28,6 +28,7 @@ public class TablaBusqueda extends JPanel {
 	private JLabel etiquetaTexto;
 	private DefaultTableModel modelo;
 	private TableRowSorter<TableModel> sorter;
+	private Docentes docentes;
 
 	/**
 	 * Create the panel.
@@ -84,6 +85,7 @@ public class TablaBusqueda extends JPanel {
 	}
 
 	public void setTabla(Docentes docentes) {
+		this.docentes = docentes;
 		List<String[]> mat = new ArrayList<>();
 		for (Docente d : docentes.getDocentes()) {
 			String[] fila = new String[6];
@@ -120,8 +122,15 @@ public class TablaBusqueda extends JPanel {
 		sorter = new TableRowSorter<TableModel>(modelo);
 		table.setRowSorter(sorter);
 	}
+	
+	public int getFilaSeleccionada () {
+		return table.convertRowIndexToModel(table.getSelectedRow());
+	}
 
-	public void filtro() {
+	public Docente getDocenteSeleccionado() {
+		return docentes.getDocentes().get(getFilaSeleccionada());
+	}
+	private void filtro() {
 		String text = textField.getText();
 		if (text.length() == 0) {
 			sorter.setRowFilter(null);

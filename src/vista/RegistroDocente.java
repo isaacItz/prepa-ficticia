@@ -17,10 +17,20 @@ public class RegistroDocente extends JDialog {
 
 	private final FormularioPersona contentPanel = new FormularioPersona();
 	private Docentes docentes;
+	private Docente docente;
 
 	public RegistroDocente(Docentes docentes) {
 		this.docentes = docentes;
+		init();
+	}
 
+	public RegistroDocente(Docente docente) {
+		this.docente = docente;
+		init();
+		contentPanel.setPersona(docente);
+	}
+
+	private void init() {
 		setModal(true);
 		setBounds(100, 100, 532, 407);
 
@@ -33,18 +43,10 @@ public class RegistroDocente extends JDialog {
 				JButton okButton = new JButton("OK");
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
-						if (contentPanel.validarPanel()) {
-							Docente d = contentPanel.getDocente();
-							if (!docentes.existeDocente(d)) {
-								docentes.agregarDocente(d);
-
-								Utileria.mensaje("Persona registrada con exito");
-							} else {
-								Utileria.mensaje("Persona ya registrada");
-							}
-
+						if (docente == null) {
+							registrarPersona();
 						} else {
-							Utileria.mensaje("Llene correctamente los campos");
+							modificarPersona();
 						}
 					}
 				});
@@ -68,4 +70,34 @@ public class RegistroDocente extends JDialog {
 		setTitle("Registro de Docentes");
 	}
 
+	public void setDocente(Docente docente) {
+		this.docente = docente;
+	}
+
+	private void registrarPersona() {
+		if (contentPanel.validarPanel()) {
+			Docente d = contentPanel.getDocente();
+			if (!docentes.existeDocente(d)) {
+				docentes.agregarDocente(d);
+				RegistroDocente.this.dispose();
+				Utileria.mensaje("Persona registrada con exito");
+			} else {
+				Utileria.mensaje("Persona ya registrada");
+			}
+
+		} else {
+			Utileria.mensaje("Llene correctamente los campos");
+		}
+	}
+
+	private void modificarPersona() {
+		if (contentPanel.validarPanel()) {
+			contentPanel.modDocente(docente);
+			Utileria.mensaje("Docente modificado");
+			RegistroDocente.this.dispose();
+
+		} else {
+			Utileria.mensaje("Llene correctamente los campos");
+		}
+	}
 }

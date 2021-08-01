@@ -74,20 +74,12 @@ public class VistaPrincipal extends JFrame {
 		});
 		mnDocentes.add(mntmRegistrar_4);
 
-		JMenuItem mntmModificar_1 = new JMenuItem("Modificar");
-		mntmModificar_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-
-			}
-		});
-		mnDocentes.add(mntmModificar_1);
-
 		JMenuItem mntmConsultar_3 = new JMenuItem("Consultar");
 		mntmConsultar_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				BusquedaDocente doc = new BusquedaDocente(docentes);
-				doc.setVisible(true);
 				doc.setLocationRelativeTo(null);
+				doc.setVisible(true);
 			}
 		});
 		mnDocentes.add(mntmConsultar_3);

@@ -132,8 +132,33 @@ public class FormularioPersona extends JPanel {
 		LocalDate fecha = Utileria.toLocalDate(dateChooser.getDate());
 		p.setFechaNac(fecha);
 		p.setCurp(cajaCurp.getText());
-		System.out.println(p);
 		return p;
+	}
+
+	public void modDocente(Docente p) {
+		p.setNombre(cajaNombre.getText());
+		p.setPaterno(cajaPaterno.getText());
+		p.setMaterno(cajaMaterno.getText());
+		if (radioMasculino.isSelected())
+			p.setSexo('M');
+		else
+			p.setSexo('F');
+		LocalDate fecha = Utileria.toLocalDate(dateChooser.getDate());
+		p.setFechaNac(fecha);
+		p.setCurp(cajaCurp.getText());
+	}
+
+	public void setPersona(Persona d) {
+		cajaNombre.setText(d.getNombre());
+		cajaPaterno.setText(d.getPaterno());
+		cajaMaterno.setText(d.getMaterno());
+		cajaCurp.setText(d.getCurp());
+		if (d.getSexo() == 'M') {
+			radioMasculino.setSelected(true);
+		} else {
+			radioFemenino.setSelected(true);
+		}
+		dateChooser.setDate(Utileria.toDate(d.getFechaNac()));
 	}
 
 	public JTextField getCajaNombre() {
