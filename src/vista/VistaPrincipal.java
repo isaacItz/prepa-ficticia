@@ -104,7 +104,7 @@ public class VistaPrincipal extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 
 				if (grupos.hayGrupos()) {
-					RegistroAlumno reg = new RegistroAlumno(grupos);
+					RegistroAlumno reg = new RegistroAlumno(grupos, false);
 					reg.setVisible(true);
 				} else {
 					Utileria.mensaje("Primero debe registar un grupo");

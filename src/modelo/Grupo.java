@@ -25,6 +25,14 @@ public class Grupo implements Serializable {
 		this.letra = letra;
 	}
 
+	public boolean existeAlumno(Alumno a) {
+		return alumnos.contains(a);
+	}
+	
+	public boolean dadoDeBaja(Alumno a) {
+		return a.getStatus().equals("Baja");
+	}
+
 	public Parciales getParciales() {
 		return parciales;
 	}
@@ -82,4 +90,48 @@ public class Grupo implements Serializable {
 		return getNombreGrupo().concat(" Docente: ").concat(getDocente().getNombre())
 				.concat(" Alumnos: ".concat(String.valueOf(alumnos.size())));
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((alumnos == null) ? 0 : alumnos.hashCode());
+		result = prime * result + ((docente == null) ? 0 : docente.hashCode());
+		result = prime * result + letra;
+		result = prime * result + ((parciales == null) ? 0 : parciales.hashCode());
+		result = prime * result + semestre;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Grupo other = (Grupo) obj;
+		if (alumnos == null) {
+			if (other.alumnos != null)
+				return false;
+		} else if (!alumnos.equals(other.alumnos))
+			return false;
+		if (docente == null) {
+			if (other.docente != null)
+				return false;
+		} else if (!docente.equals(other.docente))
+			return false;
+		if (letra != other.letra)
+			return false;
+		if (parciales == null) {
+			if (other.parciales != null)
+				return false;
+		} else if (!parciales.equals(other.parciales))
+			return false;
+		if (semestre != other.semestre)
+			return false;
+		return true;
+	}
+
 }

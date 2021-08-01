@@ -12,6 +12,7 @@ import javax.swing.border.TitledBorder;
 
 import com.toedter.calendar.JDateChooser;
 
+import modelo.Alumno;
 import modelo.Docente;
 import modelo.Persona;
 import modelo.Utileria;
@@ -120,6 +121,20 @@ public class FormularioPersona extends JPanel {
 		return p;
 	}
 
+	public Alumno getAlumno() {
+		Alumno p = new Alumno();
+		p.setNombre(cajaNombre.getText());
+		p.setPaterno(cajaPaterno.getText());
+		p.setMaterno(cajaMaterno.getText());
+		if (radioMasculino.isSelected())
+			p.setSexo('M');
+		else
+			p.setSexo('F');
+		LocalDate fecha = Utileria.toLocalDate(dateChooser.getDate());
+		p.setFechaNac(fecha);
+		p.setCurp(cajaCurp.getText());
+		return p;
+	}
 	public Docente getDocente() {
 		Docente p = new Docente();
 		p.setNombre(cajaNombre.getText());
@@ -136,6 +151,19 @@ public class FormularioPersona extends JPanel {
 	}
 
 	public void modDocente(Docente p) {
+		p.setNombre(cajaNombre.getText());
+		p.setPaterno(cajaPaterno.getText());
+		p.setMaterno(cajaMaterno.getText());
+		if (radioMasculino.isSelected())
+			p.setSexo('M');
+		else
+			p.setSexo('F');
+		LocalDate fecha = Utileria.toLocalDate(dateChooser.getDate());
+		p.setFechaNac(fecha);
+		p.setCurp(cajaCurp.getText());
+	}
+	
+	public void modPersona(Persona p) {
 		p.setNombre(cajaNombre.getText());
 		p.setPaterno(cajaPaterno.getText());
 		p.setMaterno(cajaMaterno.getText());

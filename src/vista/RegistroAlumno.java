@@ -6,6 +6,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
@@ -20,6 +21,7 @@ import modelo.Grupo;
 import modelo.Grupos;
 import modelo.Persona;
 import modelo.Utileria;
+import javax.swing.JRadioButton;
 
 public class RegistroAlumno extends JDialog {
 
@@ -29,8 +31,11 @@ public class RegistroAlumno extends JDialog {
 	private Grupos grupos;
 	private JComboBox comboGrupo;
 	private Alumno alumno;
+	private Grupo grupo;
+	private JRadioButton radioBaja;
+	private JRadioButton radioAlta;
 
-	public RegistroAlumno(Grupos grupos) {
+	public RegistroAlumno(Grupos grupos, boolean mod) {
 		this.grupos = grupos;
 		setModal(true);
 		formPersona = new FormularioPersona();
@@ -45,7 +50,7 @@ public class RegistroAlumno extends JDialog {
 			panel.setBorder(new TitledBorder(null, "Datos del Estudiante:", TitledBorder.LEADING, TitledBorder.TOP,
 					null, null));
 			contentPanel.add(panel, BorderLayout.SOUTH);
-			panel.setLayout(new GridLayout(0, 1, 0, 10));
+			panel.setLayout(new GridLayout(0, 1, 0, 0));
 
 			JLabel lblGrupo = new JLabel("Grupo:");
 			panel.add(lblGrupo);
@@ -53,7 +58,8 @@ public class RegistroAlumno extends JDialog {
 			comboGrupo = new JComboBox<>(grupos.getGrupos().toArray());
 			comboGrupo.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					int mat = ((Grupo) comboGrupo.getSelectedItem()).getAlumnos().size();
+					grupo = (Grupo) comboGrupo.getSelectedItem();
+					int mat = grupo.getAlumnos().size();
 					cajaMatricula.setText(String.valueOf(mat));
 				}
 			});
@@ -67,6 +73,30 @@ public class RegistroAlumno extends JDialog {
 				panel.add(cajaMatricula);
 				cajaMatricula.setColumns(10);
 			}
+			if (mod) {
+				{
+					JLabel lblStatus = new JLabel("Estatus:");
+					panel.add(lblStatus);
+				}
+				{
+					ButtonGroup grupo = new ButtonGroup();
+					JPanel panel_1 = new JPanel();
+					panel.add(panel_1);
+					{
+						radioAlta = new JRadioButton("Alta");
+						panel_1.add(radioAlta);
+					}
+					{
+						radioBaja = new JRadioButton("Baja");
+						panel_1.add(radioBaja);
+					}
+					{
+						grupo.add(radioBaja);
+						grupo.add(radioAlta);
+					}
+				}
+			}
+
 		}
 		{
 			JPanel buttonPane = new JPanel();
@@ -74,6 +104,22 @@ public class RegistroAlumno extends JDialog {
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
 				JButton okButton = new JButton("OK");
+				okButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						if (validarAlumno()) {
+							if (alumno == null) {
+								if (grupos.existeAlumno(getAlumno())) {
+									Utileria.mensaje("El alumno ya existe");
+								}
+								añadirAlumno();
+							} else {
+								modAlumno();
+							}
+						} else {
+							Utileria.mensaje("Datos incorrectos");
+						}
+					}
+				});
 				okButton.setActionCommand("OK");
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
@@ -110,6 +156,7 @@ public class RegistroAlumno extends JDialog {
 		a.setSexo(p.getSexo());
 		a.setMatricula(Integer.parseInt(cajaMatricula.getText()));
 		a.setGrupo((Grupo) comboGrupo.getSelectedItem());
+		a.setStatus("Alta");
 		return a;
 	}
 
@@ -118,6 +165,39 @@ public class RegistroAlumno extends JDialog {
 		cajaMatricula.setText(String.valueOf(a.getMatricula()));
 		comboGrupo.setSelectedItem(a.getGrupo());
 		formPersona.setPersona(a);
+		if (a.getStatus().equals("Alta")) {
+			radioAlta.setSelected(true);
+		}else {
+			radioBaja.setSelected(true);
+		}
 	}
 
+	private void añadirAlumno() {
+		if (formPersona.validarPanel()) {
+			Alumno d = getAlumno();
+			if (!grupo.existeAlumno(d)) {
+				grupo.agregarAlumno(d);
+				RegistroAlumno.this.dispose();
+				Utileria.mensaje("Alumno registrado con exito");
+			} else {
+				Utileria.mensaje("Alumno ya registrado");
+			}
+
+		} else {
+			Utileria.mensaje("Llene correctamente los campos");
+		}
+	}
+
+	private void modAlumno() {
+		if (formPersona.validarPanel()) {
+			formPersona.modPersona(alumno);
+			alumno.setMatricula(Integer.parseInt(cajaMatricula.getText()));
+			alumno.setGrupo(grupo);
+			Utileria.mensaje("Alumno modificado");
+			RegistroAlumno.this.dispose();
+
+		} else {
+			Utileria.mensaje("Llene correctamente los campos");
+		}
+	}
 }

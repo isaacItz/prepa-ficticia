@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Parciales implements Serializable{
+public class Parciales implements Serializable {
 	private List<Parcial> evaluaciones;
 
 	public Parciales() {
@@ -22,4 +22,30 @@ public class Parciales implements Serializable{
 		}
 		return null;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((evaluaciones == null) ? 0 : evaluaciones.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Parciales other = (Parciales) obj;
+		if (evaluaciones == null) {
+			if (other.evaluaciones != null)
+				return false;
+		} else if (!evaluaciones.equals(other.evaluaciones))
+			return false;
+		return true;
+	}
+
 }
