@@ -46,14 +46,38 @@ public class VistaPrincipal extends JFrame {
 		JMenuItem mntmRegistrar = new JMenuItem("Registrar");
 		mnAlumnos.add(mntmRegistrar);
 		
+		JMenuItem mntmModificar = new JMenuItem("Modificar");
+		mnAlumnos.add(mntmModificar);
+		
+		JMenu mnOperaciones = new JMenu("Operaciones");
+		mnAlumnos.add(mnOperaciones);
+		
+		JMenuItem mntmBaja = new JMenuItem("Baja");
+		mnOperaciones.add(mntmBaja);
+		
+		JMenuItem mntmAlta = new JMenuItem("Alta");
+		mnOperaciones.add(mntmAlta);
+		
+		JMenuItem mntmConsultar_1 = new JMenuItem("Consultar");
+		mnAlumnos.add(mntmConsultar_1);
+		
+		JMenu mnCalificaciones = new JMenu("Calificaciones");
+		menuBar.add(mnCalificaciones);
+		
+		JMenuItem mntmRegistrar_2 = new JMenuItem("Registrar");
+		mnCalificaciones.add(mntmRegistrar_2);
+		
+		JMenuItem mntmConsultar = new JMenuItem("Consultar");
+		mnCalificaciones.add(mntmConsultar);
+		
 		JMenu mnAdeudos = new JMenu("Adeudos");
 		menuBar.add(mnAdeudos);
 		
-		JMenuItem mntmConsultar = new JMenuItem("Consultar");
-		mnAdeudos.add(mntmConsultar);
-		
 		JMenuItem mntmRegistrar_1 = new JMenuItem("Registrar");
 		mnAdeudos.add(mntmRegistrar_1);
+		
+		JMenuItem mntmConsultar_2 = new JMenuItem("Consultar");
+		mnAdeudos.add(mntmConsultar_2);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
