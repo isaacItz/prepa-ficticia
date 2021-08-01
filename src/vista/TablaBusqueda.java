@@ -1,10 +1,14 @@
 package vista;
 
 import java.awt.BorderLayout;
+import java.awt.GridLayout;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.regex.PatternSyntaxException;
 
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -22,12 +26,8 @@ import modelo.Alumno;
 import modelo.Docente;
 import modelo.Docentes;
 import modelo.Grupo;
-import modelo.Grupos;
+import modelo.Parcial;
 import modelo.Utileria;
-import java.awt.GridLayout;
-import javax.swing.JComboBox;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 public class TablaBusqueda extends JPanel {
 	private JTextField textField;
@@ -41,6 +41,7 @@ public class TablaBusqueda extends JPanel {
 	private JPanel panel_2;
 	private JLabel lblGrupo;
 	private JComboBox<Grupo> comboGrupo;
+	private List<Double[]> listaCalificaciones;
 
 	/**
 	 * Create the panel.
@@ -66,7 +67,7 @@ public class TablaBusqueda extends JPanel {
 		panel_2.add(lblGrupo);
 
 		comboGrupo = new JComboBox<>();
-		
+
 		panel_2.add(comboGrupo);
 
 		JPanel panel = new JPanel();
@@ -133,8 +134,9 @@ public class TablaBusqueda extends JPanel {
 	public void setTablaAlumnos(Grupo grupo) {
 		this.grupo = grupo;
 		List<String[]> mat = new ArrayList<>();
+		int columns = 7;
 		for (Alumno a : grupo.getAlumnos()) {
-			String[] fila = new String[6];
+			String[] fila = new String[columns];
 			fila[0] = String.valueOf(a.getMatricula());
 			fila[1] = a.getStatus();
 			fila[2] = a.getNombreCompleto();
@@ -145,12 +147,39 @@ public class TablaBusqueda extends JPanel {
 			mat.add(fila);
 		}
 		int rows = mat.size();
-		int columns = 7;
 		iniciarTabla(rows, columns, mat.toArray(new String[rows][columns]),
 				new String[] { "Matricula", "Status", "Nombre", "CURP", "Fecha Nac.", "Sexo", "Grupo" });
 	}
 
-	public void iniciarTabla(int rows, int cols, String[][] data, String[] cabecera) {
+	public void setTablaCalificaciones(Grupo grupo) {
+		this.grupo = grupo;
+		List<Object[]> mat = new ArrayList<>();
+		int columns = 7 + grupo.getParciales().getCantidad();
+		for (Alumno a : grupo.getAlumnos()) {
+			Object[] fila = new Object[columns];
+			fila[0] = String.valueOf(a.getMatricula());
+			fila[1] = a.getStatus();
+			fila[2] = a.getNombreCompleto();
+			fila[3] = a.getCurp();
+			fila[4] = Utileria.formatearFecha(a.getFechaNac());
+			fila[5] = String.valueOf(a.getSexo());
+			fila[6] = a.getGrupo().getNombreGrupo();
+			for (int i = 7; i < columns; i++) {
+				fila[i] = 0;
+			}
+			mat.add(fila);
+		}
+		List<String> columnas = new ArrayList<>();
+		columnas.addAll(
+				Arrays.asList(new String[] { "Matricula", "Status", "Nombre", "CURP", "Fecha Nac.", "Sexo", "Grupo" }));
+		for (int i = 7; i < columns; i++) {
+			columnas.add("Parcial " + (i - 6));
+		}
+		int rows = mat.size();
+		iniciarTabla(rows, columns, mat.toArray(new Object[rows][columns]), columnas.toArray());
+	}
+
+	public void iniciarTabla(int rows, int cols, Object[][] data, Object[] cabecera) {
 		modelo = new DefaultTableModel(rows, cols) {
 			public Class getColumnClass(int column) {
 				Class returnValue;
@@ -194,6 +223,34 @@ public class TablaBusqueda extends JPanel {
 				sorter.setRowFilter(RowFilter.regexFilter(text));
 			} catch (PatternSyntaxException pse) {
 				System.out.println("Bad regex pattern");
+			}
+		}
+	}
+
+	public boolean validarCalificaciones() {
+		listaCalificaciones = new ArrayList<>();
+		for (int i = 0; i < modelo.getRowCount(); i++) {
+			ArrayList<Double> fila = new ArrayList<>();
+			for (int j = 0; j < grupo.getParciales().getCantidad(); j++) {
+				if (!Utileria.esDouble(table.getValueAt(i, 7 + j)) && Utileria.getDecimal() < 0) {
+					Utileria.mensaje("Calificaciones deben ser enteros mayores a 0");
+					return false;
+				} else {
+					fila.add(Utileria.getDecimal());
+				}
+			}
+			listaCalificaciones.add(fila.toArray(new Double[fila.size()]));
+		}
+		return true;
+	}
+
+	public void registrarCalificaciones() {
+		Iterator<Double[]> it = listaCalificaciones.iterator();
+		for (Parcial p : grupo.getParciales().getEvaluaciones()) {
+			List<Alumno> alumnos = grupo.getAlumnos();
+			Double[] calfs = it.next();
+			for (int i = 0; i < alumnos.size(); i++) {
+				p.setCalificacion(alumnos.get(i), calfs[i]);
 			}
 		}
 	}

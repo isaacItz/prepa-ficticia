@@ -23,6 +23,18 @@ public class Parciales implements Serializable {
 		return null;
 	}
 
+	public int getCantidad() {
+		return evaluaciones.size();
+	}
+
+	public List<Parcial> getEvaluaciones() {
+		return evaluaciones;
+	}
+
+	public void setEvaluaciones(List<Parcial> evaluaciones) {
+		this.evaluaciones = evaluaciones;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -47,5 +59,4 @@ public class Parciales implements Serializable {
 			return false;
 		return true;
 	}
-
 }

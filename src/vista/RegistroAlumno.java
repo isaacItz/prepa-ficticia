@@ -36,6 +36,7 @@ public class RegistroAlumno extends JDialog {
 	private JRadioButton radioAlta;
 
 	public RegistroAlumno(Grupos grupos, boolean mod) {
+		setTitle("Registro de Alumnos");
 		this.grupos = grupos;
 		setModal(true);
 		formPersona = new FormularioPersona();
@@ -74,7 +75,9 @@ public class RegistroAlumno extends JDialog {
 				cajaMatricula.setColumns(10);
 			}
 			if (mod) {
+				setTitle("Modificacion de Alumnos");
 				{
+
 					JLabel lblStatus = new JLabel("Estatus:");
 					panel.add(lblStatus);
 				}
@@ -110,10 +113,15 @@ public class RegistroAlumno extends JDialog {
 							if (alumno == null) {
 								if (grupos.existeAlumno(getAlumno())) {
 									Utileria.mensaje("El alumno ya existe");
+								} else {
+									añadirAlumno();
+									Utileria.mensaje("Alumnos Registrado");
+									RegistroAlumno.this.dispose();
 								}
-								añadirAlumno();
 							} else {
 								modAlumno();
+								Utileria.mensaje("Alumnos Modificado");
+								RegistroAlumno.this.dispose();
 							}
 						} else {
 							Utileria.mensaje("Datos incorrectos");
@@ -167,7 +175,7 @@ public class RegistroAlumno extends JDialog {
 		formPersona.setPersona(a);
 		if (a.getStatus().equals("Alta")) {
 			radioAlta.setSelected(true);
-		}else {
+		} else {
 			radioBaja.setSelected(true);
 		}
 	}

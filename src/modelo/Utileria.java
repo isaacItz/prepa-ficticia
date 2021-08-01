@@ -18,6 +18,8 @@ import javax.swing.JTextField;
 import com.toedter.calendar.JDateChooser;
 
 public class Utileria {
+	private static int entero;
+	private static double decimal;
 
 	public boolean estaVacio(JTextField caja) {
 		return caja.getText().isEmpty();
@@ -83,8 +85,31 @@ public class Utileria {
 		return !caja.getText().isEmpty();
 	}
 
-	public static boolean validarEntero(JTextField caja) {
+	public static boolean esEntero(Object o) {
+		try {
+			entero = Integer.parseInt(o.toString());
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
 
+	public static int getEntero() {
+		return entero;
+	}
+	public static boolean esDouble(Object o) {
+		try {
+			decimal = Double.parseDouble(o.toString());
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
+	public static double getDecimal() {
+		return decimal;
+	}
+	public static boolean validarEntero(JTextField caja) {
 		try {
 			Integer.parseInt(caja.getText());
 			if (!caja.getText().isEmpty())
