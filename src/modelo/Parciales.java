@@ -1,9 +1,10 @@
 package modelo;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Parciales {
+public class Parciales implements Serializable{
 	private List<Parcial> evaluaciones;
 
 	public Parciales() {

@@ -1,8 +1,9 @@
 package modelo;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
-public class Parcial {
+public class Parcial implements Serializable {
 	private int parcial;
 	private HashMap<Alumno, Double> alumnos;
 

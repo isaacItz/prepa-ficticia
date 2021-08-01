@@ -1,9 +1,10 @@
 package modelo;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Grupo {
+public class Grupo implements Serializable{
 	private Docente docente;
 	private List<Alumno> alumnos;
 	private Parciales parciales;

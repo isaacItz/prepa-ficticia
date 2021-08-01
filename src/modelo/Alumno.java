@@ -1,8 +1,9 @@
 package modelo;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class Alumno extends Persona {
+public class Alumno extends Persona implements Serializable{
 	public static final String ALTA = "alta";
 	public static final String BAJA = "baja";
 	private int matricula;
