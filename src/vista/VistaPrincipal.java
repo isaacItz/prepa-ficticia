@@ -20,6 +20,7 @@ import javax.swing.border.EmptyBorder;
 
 import modelo.Docentes;
 import modelo.Grupos;
+import modelo.Utileria;
 
 public class VistaPrincipal extends JFrame {
 
@@ -102,12 +103,16 @@ public class VistaPrincipal extends JFrame {
 		mntmRegistrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 
+				if (grupos.hayGrupos()) {
+					RegistroAlumno reg = new RegistroAlumno(grupos);
+					reg.setVisible(true);
+				} else {
+					Utileria.mensaje("Primero debe registar un grupo");
+				}
+
 			}
 		});
 		mnAlumnos.add(mntmRegistrar);
-
-		JMenuItem mntmModificar = new JMenuItem("Modificar");
-		mnAlumnos.add(mntmModificar);
 
 		JMenu mnOperaciones = new JMenu("Operaciones");
 		mnAlumnos.add(mnOperaciones);

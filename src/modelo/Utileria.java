@@ -78,8 +78,20 @@ public class Utileria {
 			return false;
 		}
 	}
+
 	public static boolean validarCaja(JTextField caja) {
 		return !caja.getText().isEmpty();
+	}
+
+	public static boolean validarEntero(JTextField caja) {
+
+		try {
+			Integer.parseInt(caja.getText());
+			if (!caja.getText().isEmpty())
+				return true;
+		} catch (Exception e) {
+		}
+		return false;
 	}
 
 	public static boolean horaValida(JTextField caja) {

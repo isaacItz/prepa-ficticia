@@ -4,15 +4,14 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 public class Alumno extends Persona implements Serializable{
-	public static final String ALTA = "alta";
-	public static final String BAJA = "baja";
+	public static final String ALTA = "Alta";
+	public static final String BAJA = "Baja";
 	private int matricula;
 	private Grupo grupo;
 	private String status;
 
 	public Alumno() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public Alumno(String nombre, String paterno, String materno, LocalDate fechaNac, char sexo) {

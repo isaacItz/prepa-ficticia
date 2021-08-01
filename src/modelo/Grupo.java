@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Grupo implements Serializable{
+public class Grupo implements Serializable {
 	private Docente docente;
 	private List<Alumno> alumnos;
 	private Parciales parciales;
@@ -79,7 +79,7 @@ public class Grupo implements Serializable{
 
 	@Override
 	public String toString() {
-		return "Grupo [docente=" + docente + ", alumnos=" + alumnos + ", semestre=" + semestre + ", letra=" + letra
-				+ "]";
+		return getNombreGrupo().concat(" Docente: ").concat(getDocente().getNombre())
+				.concat(" Alumnos: ".concat(String.valueOf(alumnos.size())));
 	}
 }

@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Grupos implements Serializable{
+public class Grupos implements Serializable {
 	private List<Grupo> grupos;
 
 	public Grupos() {
@@ -13,6 +13,10 @@ public class Grupos implements Serializable{
 
 	public void agregarGrupo(Grupo g) {
 		grupos.add(g);
+	}
+
+	public boolean hayGrupos() {
+		return grupos.size() > 0;
 	}
 
 	public Grupo getGrupo(int num, char letra) {
