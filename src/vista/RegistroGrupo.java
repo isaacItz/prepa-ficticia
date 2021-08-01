@@ -16,20 +16,21 @@ import javax.swing.border.EmptyBorder;
 
 import modelo.Docente;
 import modelo.Docentes;
+import modelo.Grupo;
 import modelo.Grupos;
 
 public class RegistroGrupo extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
-	private JComboBox textField;
-	private JComboBox textField_1;
+	private JComboBox<Integer> comboGrado;
+	private JComboBox<Character> comboLetra;
 	private Grupos grupos;
-	private JComboBox textField_2;
-	private DefaultComboBoxModel<String> modelDocentes;
+	private JComboBox<Docente> comboDocente;
+	private DefaultComboBoxModel<Docente> modelDocentes;
 	private Docentes docentes;
 
 	public RegistroGrupo(Grupos grupos) {
-		modelDocentes = new DefaultComboBoxModel<String>();
+		modelDocentes = new DefaultComboBoxModel<Docente>();
 		this.grupos = grupos;
 
 		setModal(true);
@@ -43,37 +44,36 @@ public class RegistroGrupo extends JDialog {
 			contentPanel.add(lblGrado);
 		}
 		{
-			textField = new JComboBox();
-			textField.setModel(new DefaultComboBoxModel(
-					new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" }));
-			contentPanel.add(textField);
+			comboGrado = new JComboBox<>();
+			comboGrado.setModel(new DefaultComboBoxModel<>(new Integer[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }));
+			contentPanel.add(comboGrado);
 		}
 		{
 			JLabel lblLetra = new JLabel("Letra:");
 			contentPanel.add(lblLetra);
 		}
 		{
-			textField_1 = new JComboBox();
-			textField_1.setModel(new DefaultComboBoxModel(new String[] { "A", "B", "C", "D", "E", "F" }));
-			contentPanel.add(textField_1);
+			comboLetra = new JComboBox<>();
+			comboLetra.setModel(new DefaultComboBoxModel<>(new Character[] { 'A', 'B', 'C', 'D', 'E', 'F' }));
+			contentPanel.add(comboLetra);
 		}
 		{
 			JLabel lblDocente = new JLabel("Docente:");
 			contentPanel.add(lblDocente);
 		}
 		{
-			textField_2 = new JComboBox();
-			contentPanel.add(textField_2);
+			comboDocente = new JComboBox<>();
+			contentPanel.add(comboDocente);
 		}
 		{
 			JLabel lblCantidadDeParciales = new JLabel("Cantidad de Parciales:");
 			contentPanel.add(lblCantidadDeParciales);
 		}
 		{
-			JComboBox comboBox = new JComboBox();
-			comboBox.setModel(new DefaultComboBoxModel(
-					new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15" }));
-			contentPanel.add(comboBox);
+			JComboBox<Integer> comboParciales = new JComboBox<>();
+			comboParciales.setModel(
+					new DefaultComboBoxModel<>(new Integer[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 }));
+			contentPanel.add(comboParciales);
 		}
 		{
 			JPanel buttonPane = new JPanel();
@@ -81,6 +81,10 @@ public class RegistroGrupo extends JDialog {
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
 				JButton okButton = new JButton("OK");
+				okButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+					}
+				});
 				okButton.setActionCommand("OK");
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
@@ -103,7 +107,19 @@ public class RegistroGrupo extends JDialog {
 		this.docentes = docentes;
 	}
 
+	private void validarGrupo() {
+		if (grupos.existeGrupo(comboGrado.getSelectedIndex() + 1, comboLetra.getSelectedItem().toString().charAt(0))) {
+
+		}
+	}
+
+	private void registrarGrupo() {
+		Grupo grupo = new Grupo();
+
+	}
+
 	private void llenarDocentes() {
+		comboDocente.setModel(modelDocentes);
 		for (Docente d : docentes.getDocentes()) {
 			modelDocentes.addElement(d.getNombreCompleto());
 		}
