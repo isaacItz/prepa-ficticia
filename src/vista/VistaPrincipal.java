@@ -124,6 +124,19 @@ public class VistaPrincipal extends JFrame {
 		mnOperaciones.add(mntmAlta);
 
 		JMenuItem mntmConsultar_1 = new JMenuItem("Consultar");
+		mntmConsultar_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if (grupos.hayGrupos()) {
+					if (grupos.hayAlumnos()) {
+						BusquedaAlumnos busqA = new BusquedaAlumnos(grupos);
+					} else {
+						Utileria.mensaje("No hay Alumnos registrados");
+					}
+				} else {
+					Utileria.mensaje("No hay grupos registrados;");
+				}
+			}
+		});
 		mnAlumnos.add(mntmConsultar_1);
 
 		JMenu mnCalificaciones = new JMenu("Calificaciones");

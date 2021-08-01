@@ -25,7 +25,8 @@ public class BusquedaAlumnos extends JDialog {
 	private DefaultComboBoxModel<Grupo> model;
 	private Grupo grupo;
 
-	public BusquedaAlumnos() {
+	public BusquedaAlumnos(Grupos grupos) {
+		this.grupos = grupos;
 		model = new DefaultComboBoxModel<>();
 		tabla = new TablaBusqueda();
 		comboGrupo = tabla.getComboGrupo();

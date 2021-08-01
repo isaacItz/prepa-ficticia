@@ -28,6 +28,15 @@ public class Grupos implements Serializable {
 		return false;
 	}
 
+	public boolean hayAlumnos() {
+		for (Grupo g : grupos) {
+			if (g.getAlumnos().size() > 0) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public Grupo getGrupo(int num, char letra) {
 		for (Grupo g : grupos) {
 			if (g.getLetra() == letra && g.getSemestre() == num) {
