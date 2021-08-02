@@ -10,7 +10,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
+import javax.print.attribute.standard.OutputDeviceAssigned;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -156,12 +159,12 @@ public class VistaPrincipal extends JFrame {
 		mntmRegistrar_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (grupos.hayGrupos()) {
-					if (grupos.hayAlumnos()) {
+					if (grupos.hayAlumnosDeAlta()) {
 						RegistroCalificaciones regCal = new RegistroCalificaciones(grupos);
 						regCal.setVisible(true);
 
 					} else {
-						Utileria.mensaje("No hay Alumnos registrados");
+						Utileria.mensaje("No hay Alumnos dados de alta");
 					}
 				} else {
 					Utileria.mensaje("No hay grupos registrados;");
@@ -174,13 +177,13 @@ public class VistaPrincipal extends JFrame {
 		mntmConsultar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (grupos.hayGrupos()) {
-					if (grupos.hayAlumnos()) {
+					if (grupos.hayAlumnosDeAlta()) {
 						RegistroCalificaciones regCal = new RegistroCalificaciones(grupos);
 						regCal.soloConsultar();
 						regCal.setVisible(true);
 
 					} else {
-						Utileria.mensaje("No hay Alumnos registrados");
+						Utileria.mensaje("No hay Alumnos dados de alta");
 					}
 				} else {
 					Utileria.mensaje("No hay grupos registrados;");
@@ -196,12 +199,12 @@ public class VistaPrincipal extends JFrame {
 		mntmRegistrar_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (grupos.hayGrupos()) {
-					if (grupos.hayAlumnos()) {
+					if (grupos.hayAlumnosDeAlta()) {
 						RegistroAdeudos regAdeu = new RegistroAdeudos(grupos, adeudos, false);
 						regAdeu.setVisible(true);
 
 					} else {
-						Utileria.mensaje("No hay Alumnos registrados");
+						Utileria.mensaje("No hay Alumnos dados de alta");
 					}
 				} else {
 					Utileria.mensaje("No hay grupos registrados;");
@@ -214,12 +217,12 @@ public class VistaPrincipal extends JFrame {
 		mntmConsultar_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (grupos.hayGrupos()) {
-					if (grupos.hayAlumnos()) {
+					if (grupos.hayAlumnosDeAlta()) {
 						ConsultaAdeudos regAdeu = new ConsultaAdeudos(grupos, adeudos);
 						regAdeu.setVisible(true);
 
 					} else {
-						Utileria.mensaje("No hay Alumnos registrados");
+						Utileria.mensaje("No hay Alumnos dados de alta");
 					}
 				} else {
 					Utileria.mensaje("No hay grupos registrados;");
@@ -271,6 +274,7 @@ public class VistaPrincipal extends JFrame {
 
 	private <T> void crearStream(String nombre, T o) {
 		try {
+			Files.createDirectories(Paths.get("objetos/"));
 			FileOutputStream archivo = new FileOutputStream("objetos/objeto-" + nombre + "");
 			// archivo.flush();
 			creadorDeFlujo = new ObjectOutputStream((archivo));

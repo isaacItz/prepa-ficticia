@@ -138,7 +138,7 @@ public class RegistroAlumno extends JDialog {
 				getRootPane().setDefaultButton(okButton);
 			}
 			{
-				JButton cancelButton = new JButton("Cancel");
+				JButton cancelButton = new JButton("Salir");
 				cancelButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
 						dispose();

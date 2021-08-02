@@ -125,19 +125,17 @@ public class TablaBusqueda extends JPanel {
 		this.docentes = docentes;
 		List<String[]> mat = new ArrayList<>();
 		for (Docente d : docentes.getDocentes()) {
-			String[] fila = new String[6];
-			fila[0] = d.getNombre();
-			fila[1] = d.getPaterno();
-			fila[2] = d.getMaterno();
-			fila[3] = d.getCurp();
-			fila[4] = Utileria.formatearFecha(d.getFechaNac());
-			fila[5] = String.valueOf(d.getSexo());
+			String[] fila = new String[4];
+			fila[0] = d.getNombreCompleto();
+			fila[1] = d.getCurp();
+			fila[2] = Utileria.formatearFecha(d.getFechaNac());
+			fila[3] = String.valueOf(d.getSexo());
 			mat.add(fila);
 		}
 		int rows = mat.size();
-		int columns = 6;
+		int columns = 4;
 		iniciarTabla(rows, columns, mat.toArray(new String[rows][columns]),
-				new String[] { "Nombre", "Ap. Paterno", "Ap. Materno", "CURP", "Fecha Nac.", "Sexo" });
+				new String[] { "Nombre", "CURP", "Fecha Nac.", "Sexo" });
 	}
 
 	public void setTablaAlumnos(Grupo grupo) {

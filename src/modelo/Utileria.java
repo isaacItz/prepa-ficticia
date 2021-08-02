@@ -100,7 +100,7 @@ public class Utileria {
 
 	public static boolean esDouble(JTextField o) {
 		try {
-			decimal = Double.parseDouble(o.getText().toString());
+			decimal = Double.parseDouble(o.getText());
 			return true;
 		} catch (Exception e) {
 			return false;

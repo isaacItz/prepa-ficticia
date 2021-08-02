@@ -200,9 +200,13 @@ public class RegistroAdeudos extends JDialog {
 			Utileria.mensaje("El Costo debe ser un decimal positivo");
 			return false;
 		}
+		if (checkGrupo.isSelected() && !(grupo.getAlumnosDeAlta().size() == 0)) {
+			Utileria.mensaje("Seleccione un grupo con al menos un alumno");
+			return false;
+		}
 		if (checkSeleccionados.isSelected()) {
 			if (tabla.getAlumnosSeleccionados().size() == 0) {
-				Utileria.mensaje("seleccione al menos un alumno");
+				Utileria.mensaje("Seleccione al menos un alumno");
 				return false;
 			}
 		}
