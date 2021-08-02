@@ -67,7 +67,7 @@ public class VistaPrincipal extends JFrame {
 		}
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 639, 414);
 
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -87,9 +87,13 @@ public class VistaPrincipal extends JFrame {
 		JMenuItem mntmConsultar_3 = new JMenuItem("Consultar");
 		mntmConsultar_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				BusquedaDocente doc = new BusquedaDocente(docentes);
-				doc.setLocationRelativeTo(null);
-				doc.setVisible(true);
+				if (docentes.hayDocentes()) {
+					BusquedaDocente doc = new BusquedaDocente(docentes);
+					doc.setLocationRelativeTo(null);
+					doc.setVisible(true);
+				} else {
+					Utileria.mensaje("No hay docentes registrados");
+				}
 			}
 		});
 		mnDocentes.add(mntmConsultar_3);
@@ -127,15 +131,6 @@ public class VistaPrincipal extends JFrame {
 			}
 		});
 		mnAlumnos.add(mntmRegistrar);
-
-		JMenu mnOperaciones = new JMenu("Operaciones");
-		mnAlumnos.add(mnOperaciones);
-
-		JMenuItem mntmBaja = new JMenuItem("Baja");
-		mnOperaciones.add(mntmBaja);
-
-		JMenuItem mntmAlta = new JMenuItem("Alta");
-		mnOperaciones.add(mntmAlta);
 
 		JMenuItem mntmConsultar_1 = new JMenuItem("Consultar");
 		mntmConsultar_1.addActionListener(new ActionListener() {

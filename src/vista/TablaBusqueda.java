@@ -83,7 +83,7 @@ public class TablaBusqueda extends JPanel {
 		JPanel panel = new JPanel();
 		panel_1.add(panel);
 
-		etiquetaTexto = new JLabel("Ingrese el nombre:");
+		etiquetaTexto = new JLabel("Filtrar:");
 		panel.add(etiquetaTexto);
 
 		textField = new JTextField();
@@ -126,7 +126,6 @@ public class TablaBusqueda extends JPanel {
 		List<String[]> mat = new ArrayList<>();
 		for (Docente d : docentes.getDocentes()) {
 			String[] fila = new String[6];
-			System.out.println(d);
 			fila[0] = d.getNombre();
 			fila[1] = d.getPaterno();
 			fila[2] = d.getMaterno();
@@ -171,7 +170,7 @@ public class TablaBusqueda extends JPanel {
 		this.grupo = grupo;
 		List<Object[]> mat = new ArrayList<>();
 		int columns = 7 + grupo.getParciales().getCantidad();
-		for (Alumno a : grupo.getAlumnos()) {
+		for (Alumno a : grupo.getAlumnosDeAlta()) {
 			Object[] fila = new Object[columns];
 			fila[0] = String.valueOf(a.getMatricula());
 			fila[1] = a.getStatus();
@@ -338,7 +337,7 @@ public class TablaBusqueda extends JPanel {
 				if (table.getValueAt(i, 7 + j).toString().isEmpty()) {
 					fila.add(null);
 				} else {
-					if (!Utileria.esDouble(table.getValueAt(i, 7 + j)) && Utileria.getDecimal() < 0) {
+					if (!Utileria.esDouble(table.getValueAt(i, 7 + j).toString()) && Utileria.getDecimal() < 0) {
 						return false;
 					} else {
 						fila.add(Utileria.getDecimal());
@@ -352,7 +351,7 @@ public class TablaBusqueda extends JPanel {
 
 	public void registrarCalificaciones() {
 		Iterator<Double[]> it = listaCalificaciones.iterator();
-		List<Alumno> alumnos = grupo.getAlumnosDeAlta();
+		List<Alumno> alumnos = grupo.getAlumnos();
 		for (int i = 0; i < alumnos.size(); i++) {
 			Double[] calfs = it.next();
 			for (int j = 0; j < calfs.length; j++) {
@@ -372,7 +371,7 @@ public class TablaBusqueda extends JPanel {
 	public List<Alumno> getAlumnosSeleccionados() {
 		List<Alumno> alumnos = new ArrayList<>();
 		for (int i = 0; i < table.getRowCount(); i++) {
-			if ((boolean) table.getValueAt(i, 8)) {
+			if ((boolean) table.getValueAt(i, 7)) {
 				alumnos.add(grupo.getAlumnos().get(i));
 			}
 		}

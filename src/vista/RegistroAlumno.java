@@ -44,7 +44,10 @@ public class RegistroAlumno extends JDialog {
 		this.grupos = grupos;
 		setModal(true);
 		formPersona = new FormularioPersona();
-		setBounds(100, 100, 532, 589);
+		if (!mod)
+			setBounds(100, 100, 532, 589);
+		else
+			setBounds(100, 100, 532, 750);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);

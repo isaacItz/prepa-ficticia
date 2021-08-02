@@ -79,8 +79,13 @@ public class RegistroCalificaciones extends JDialog {
 	}
 
 	private void setGrupo() {
+
 		grupo = (Grupo) comboGrupo.getSelectedItem();
-		tabla.setTablaCalificaciones(grupo);
+		if (grupo.getAlumnosDeAlta().size() > 0) {
+			tabla.setTablaCalificaciones(grupo);
+		} else {
+			Utileria.mensaje("No hay alumnos dados de alta");
+		}
 	}
 
 	private void llenarModelo() {
@@ -97,7 +102,7 @@ public class RegistroCalificaciones extends JDialog {
 			Utileria.mensaje("Calificaciones deben ser enteros mayores a 0");
 		}
 	}
-	
+
 	public void soloConsultar() {
 		buttonPane.remove(okButton);
 		cancelButton.setText("Salir");

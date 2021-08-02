@@ -200,6 +200,12 @@ public class RegistroAdeudos extends JDialog {
 			Utileria.mensaje("El Costo debe ser un decimal positivo");
 			return false;
 		}
+		if (checkSeleccionados.isSelected()) {
+			if (tabla.getAlumnosSeleccionados().size() == 0) {
+				Utileria.mensaje("seleccione al menos un alumno");
+				return false;
+			}
+		}
 		return true;
 	}
 
@@ -210,6 +216,7 @@ public class RegistroAdeudos extends JDialog {
 		a.setFecha(Utileria.toLocalDate(dateChooser.getDate()));
 		Utileria.esDouble(cajaCosto);
 		a.setCosto(Utileria.getDecimal());
+		System.out.println(a.getCosto());
 		if (checkTodos.isSelected()) {
 			a.setAlumnos(grupos.getAlumnos());
 		} else if (checkGrupo.isSelected()) {

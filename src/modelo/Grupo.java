@@ -46,6 +46,10 @@ public class Grupo implements Serializable {
 		return -1;
 	}
 
+	public boolean hayAlumnos() {
+		return alumnos.size() > 0;
+	}
+
 	public Parciales getParciales() {
 		return parciales;
 	}

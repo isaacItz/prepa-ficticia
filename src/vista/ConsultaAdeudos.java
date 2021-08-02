@@ -130,27 +130,15 @@ public class ConsultaAdeudos extends JDialog {
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				JButton okButton = new JButton("OK");
+				JButton okButton = new JButton("Salir");
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
-
+						ConsultaAdeudos.this.dispose();
 					}
 				});
 				okButton.setActionCommand("OK");
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
-			}
-			{
-				JButton cancelButton = new JButton("Cancel");
-				cancelButton.addActionListener(new ActionListener() {
-
-					public void actionPerformed(ActionEvent arg0) {
-						dispose();
-					}
-
-				});
-				cancelButton.setActionCommand("Cancel");
-				buttonPane.add(cancelButton);
 			}
 		}
 		setLocationRelativeTo(null);
@@ -163,7 +151,6 @@ public class ConsultaAdeudos extends JDialog {
 			}
 		});
 
-		
 	}
 
 }

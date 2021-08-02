@@ -20,6 +20,7 @@ public class BusquedaDocente extends JDialog {
 	private TablaBusqueda tabla;
 
 	public BusquedaDocente(Docentes docentes) {
+		setModal(true);
 		this.docentes = docentes;
 		setTitle("Consulta de Docentes");
 		setBounds(100, 100, 595, 383);

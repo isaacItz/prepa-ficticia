@@ -98,9 +98,18 @@ public class Utileria {
 		return entero;
 	}
 
-	public static boolean esDouble(Object o) {
+	public static boolean esDouble(JTextField o) {
 		try {
-			decimal = Double.parseDouble(o.toString());
+			decimal = Double.parseDouble(o.getText().toString());
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
+	public static boolean esDouble(String o) {
+		try {
+			decimal = Double.parseDouble(o);
 			return true;
 		} catch (Exception e) {
 			return false;
