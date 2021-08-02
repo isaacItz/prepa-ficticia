@@ -18,6 +18,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import modelo.Alumnos;
+import modelo.CiclosEscolares;
 import modelo.Docentes;
 import modelo.Grupos;
 import modelo.Utileria;
@@ -28,7 +30,9 @@ public class VistaPrincipal extends JFrame {
 	private ObjectOutputStream creadorDeFlujo;
 	private ObjectInputStream lectorDeFlujo;
 	private Grupos grupos;
+	private Alumnos alumnos;
 	private Docentes docentes;
+	private CiclosEscolares ciclosEscolares;
 
 	/**
 	 * Launch the application.
@@ -54,6 +58,8 @@ public class VistaPrincipal extends JFrame {
 		if (!cargarObjetos()) {
 			this.grupos = new Grupos();
 			this.docentes = new Docentes();
+			this.ciclosEscolares = new CiclosEscolares();
+			this.alumnos = new Alumnos();
 			System.err.println("no se pudieron cargar los datos");
 		}
 
@@ -91,7 +97,12 @@ public class VistaPrincipal extends JFrame {
 		JMenuItem mntmRegistrar_3 = new JMenuItem("Registrar");
 		mntmRegistrar_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-
+				if (docentes.hayDocentes()) {
+					RegistroGrupo regGrup = new RegistroGrupo(grupos, docentes);
+					regGrup.setVisible(true);
+				} else {
+					Utileria.mensaje("Debe Registrar Docentes primero");
+				}
 			}
 		});
 		mnGrupos.add(mntmRegistrar_3);
@@ -104,7 +115,7 @@ public class VistaPrincipal extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 
 				if (grupos.hayGrupos()) {
-					RegistroAlumno reg = new RegistroAlumno(grupos, false);
+					RegistroAlumno reg = new RegistroAlumno(grupos, alumnos, false);
 					reg.setVisible(true);
 				} else {
 					Utileria.mensaje("Primero debe registar un grupo");
@@ -128,7 +139,7 @@ public class VistaPrincipal extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				if (grupos.hayGrupos()) {
 					if (grupos.hayAlumnos()) {
-						BusquedaAlumnos busqA = new BusquedaAlumnos(grupos);
+						BusquedaAlumnos busqA = new BusquedaAlumnos(grupos, alumnos);
 						busqA.setVisible(true);
 					} else {
 						Utileria.mensaje("No hay Alumnos registrados");
@@ -201,6 +212,8 @@ public class VistaPrincipal extends JFrame {
 				// if (!new File("P").exists())
 				crearStream("grupos", grupos);
 				crearStream("docentes", docentes);
+				crearStream("alumnos", alumnos);
+				crearStream("ciclosEscolares", ciclosEscolares);
 				System.out.println("bye");
 				System.exit(0);
 
@@ -243,6 +256,8 @@ public class VistaPrincipal extends JFrame {
 	private boolean cargarObjetos() {
 		grupos = leerStream("grupos", grupos);
 		docentes = leerStream("docentes", docentes);
+		ciclosEscolares = leerStream("ciclosEscolares", ciclosEscolares);
+		alumnos = leerStream("alumnos", alumnos);
 		if (docentes == null)
 			return false;
 		if (grupos == null)

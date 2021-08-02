@@ -7,12 +7,22 @@ import java.util.List;
 public class Parciales implements Serializable {
 	private List<Parcial> evaluaciones;
 
-	public Parciales() {
-		this.evaluaciones = new ArrayList<>();
+	public Parciales(int parciales) {
+		this.evaluaciones = new ArrayList<>(parciales);
+		for (int i = 0; i < parciales; i++) {
+			Parcial p = new Parcial(i + 1);
+			evaluaciones.add(p);
+		}
 	}
 
 	public void registrarParcial(Parcial p) {
 		this.evaluaciones.add(p);
+	}
+
+	public void eliminarAlumno(Alumno a) {
+		for (Parcial parcial : evaluaciones) {
+			parcial.elimiarAlumno(a);
+		}
 	}
 
 	public Parcial getParcial(int parcial) {

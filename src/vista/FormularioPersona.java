@@ -91,18 +91,38 @@ public class FormularioPersona extends JPanel {
 	}
 
 	public boolean validarPanel() {
-		if (cajaNombre.getText().isEmpty())
+		if (cajaNombre.getText().isEmpty()) {
+			Utileria.mensaje("El nombre no puede estar vacio");
+			cajaNombre.requestFocus();
 			return false;
-		if (cajaPaterno.getText().isEmpty())
+		}
+		if (cajaPaterno.getText().isEmpty()) {
+			Utileria.mensaje("El apellido no puede estar vacio");
+			cajaPaterno.requestFocus();
 			return false;
-		if (cajaMaterno.getText().isEmpty())
+		}
+		if (cajaMaterno.getText().isEmpty()) {
+			Utileria.mensaje("El apellido no puede estar vacio");
+			cajaMaterno.requestFocus();
 			return false;
-		if (cajaCurp.getText().isEmpty())
+		}
+		if (cajaCurp.getText().isEmpty()) {
+			Utileria.mensaje("La curp no puede estar vacia");
+			cajaCurp.requestFocus();
 			return false;
-		if (dateChooser.getDate() == null)
+		}
+		if (dateChooser.getDate() == null) {
+			Utileria.mensaje("La fecha no puede estar vacia");
 			return false;
-		if (!radioFemenino.isSelected() && !radioMasculino.isSelected())
+		}
+		if (!Utileria.validarCajaFecha(dateChooser)) {
+			Utileria.mensaje("La fecha es invalida");
 			return false;
+		}
+		if (!radioFemenino.isSelected() && !radioMasculino.isSelected()) {
+			Utileria.mensaje("Seleccione un sexo");
+			return false;
+		}
 		return true;
 	}
 
@@ -135,6 +155,7 @@ public class FormularioPersona extends JPanel {
 		p.setCurp(cajaCurp.getText());
 		return p;
 	}
+
 	public Docente getDocente() {
 		Docente p = new Docente();
 		p.setNombre(cajaNombre.getText());
@@ -162,7 +183,7 @@ public class FormularioPersona extends JPanel {
 		p.setFechaNac(fecha);
 		p.setCurp(cajaCurp.getText());
 	}
-	
+
 	public void modPersona(Persona p) {
 		p.setNombre(cajaNombre.getText());
 		p.setPaterno(cajaPaterno.getText());

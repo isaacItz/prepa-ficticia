@@ -32,7 +32,7 @@ public class RegistroCalificaciones extends JDialog {
 	public RegistroCalificaciones(Grupos grupos) {
 		this.grupos = grupos;
 		model = new DefaultComboBoxModel<>();
-		tabla = new TablaBusqueda();
+		tabla = new TablaBusqueda(true);
 		comboGrupo = tabla.getComboGrupo();
 		comboGrupo.setModel(model);
 		llenarModelo();

@@ -12,16 +12,17 @@ import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
 import modelo.Alumno;
+import modelo.Alumnos;
 import modelo.Grupo;
 import modelo.Grupos;
 import modelo.Persona;
 import modelo.Utileria;
-import javax.swing.JRadioButton;
 
 public class RegistroAlumno extends JDialog {
 
@@ -32,10 +33,13 @@ public class RegistroAlumno extends JDialog {
 	private JComboBox comboGrupo;
 	private Alumno alumno;
 	private Grupo grupo;
+	private Grupo grupoAnterior;
 	private JRadioButton radioBaja;
 	private JRadioButton radioAlta;
+	private Alumnos alumnos;
 
-	public RegistroAlumno(Grupos grupos, boolean mod) {
+	public RegistroAlumno(Grupos grupos, Alumnos alumnos, boolean mod) {
+		this.alumnos = alumnos;
 		setTitle("Registro de Alumnos");
 		this.grupos = grupos;
 		setModal(true);
@@ -59,9 +63,7 @@ public class RegistroAlumno extends JDialog {
 			comboGrupo = new JComboBox<>(grupos.getGrupos().toArray());
 			comboGrupo.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					grupo = (Grupo) comboGrupo.getSelectedItem();
-					int mat = grupo.getAlumnos().size();
-					cajaMatricula.setText(String.valueOf(mat));
+					setMatricula();
 				}
 			});
 			panel.add(comboGrupo);
@@ -71,6 +73,7 @@ public class RegistroAlumno extends JDialog {
 			}
 			{
 				cajaMatricula = new JTextField();
+				cajaMatricula.setEditable(false);
 				panel.add(cajaMatricula);
 				cajaMatricula.setColumns(10);
 			}
@@ -108,23 +111,22 @@ public class RegistroAlumno extends JDialog {
 			{
 				JButton okButton = new JButton("OK");
 				okButton.addActionListener(new ActionListener() {
+
 					public void actionPerformed(ActionEvent arg0) {
 						if (validarAlumno()) {
 							if (alumno == null) {
-								if (grupos.existeAlumno(getAlumno())) {
-									Utileria.mensaje("El alumno ya existe");
-								} else {
+								alumno = getAlumno();
+								if (!grupos.existeAlumno(alumno)) {
 									añadirAlumno();
-									Utileria.mensaje("Alumnos Registrado");
+									Utileria.mensaje("Alumno Registrado");
 									RegistroAlumno.this.dispose();
+								} else {
+									Utileria.mensaje("El alumno ya esta en otro grupo");
 								}
+
 							} else {
 								modAlumno();
-								Utileria.mensaje("Alumnos Modificado");
-								RegistroAlumno.this.dispose();
 							}
-						} else {
-							Utileria.mensaje("Datos incorrectos");
 						}
 					}
 				});
@@ -144,12 +146,14 @@ public class RegistroAlumno extends JDialog {
 			}
 		}
 
+		setMatricula();
 		setLocationRelativeTo(null);
 	}
 
 	public boolean validarAlumno() {
-		if (!Utileria.validarEntero(cajaMatricula))
+		if (!formPersona.validarPanel()) {
 			return false;
+		}
 		return true;
 	}
 
@@ -170,6 +174,7 @@ public class RegistroAlumno extends JDialog {
 
 	public void setAlumno(Alumno a) {
 		this.alumno = a;
+		grupoAnterior = a.getGrupo();
 		cajaMatricula.setText(String.valueOf(a.getMatricula()));
 		comboGrupo.setSelectedItem(a.getGrupo());
 		formPersona.setPersona(a);
@@ -181,25 +186,16 @@ public class RegistroAlumno extends JDialog {
 	}
 
 	private void añadirAlumno() {
-		if (formPersona.validarPanel()) {
-			Alumno d = getAlumno();
-			if (!grupo.existeAlumno(d)) {
-				grupo.agregarAlumno(d);
-				RegistroAlumno.this.dispose();
-				Utileria.mensaje("Alumno registrado con exito");
-			} else {
-				Utileria.mensaje("Alumno ya registrado");
-			}
-
-		} else {
-			Utileria.mensaje("Llene correctamente los campos");
-		}
+		Alumno d = getAlumno();
+		alumnos.agregarAlumno(d);
+		grupo.agregarAlumno(d);
 	}
 
 	private void modAlumno() {
 		if (formPersona.validarPanel()) {
+			grupoAnterior.eliminarAlumno(alumno);
+			grupo.agregarAlumno(alumno);
 			formPersona.modPersona(alumno);
-			alumno.setMatricula(Integer.parseInt(cajaMatricula.getText()));
 			alumno.setGrupo(grupo);
 			Utileria.mensaje("Alumno modificado");
 			RegistroAlumno.this.dispose();
@@ -207,5 +203,11 @@ public class RegistroAlumno extends JDialog {
 		} else {
 			Utileria.mensaje("Llene correctamente los campos");
 		}
+	}
+
+	private void setMatricula() {
+		grupo = (Grupo) comboGrupo.getSelectedItem();
+		int mat = alumnos.getMatricula();
+		cajaMatricula.setText(String.valueOf(mat));
 	}
 }

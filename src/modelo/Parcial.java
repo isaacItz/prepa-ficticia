@@ -16,6 +16,10 @@ public class Parcial implements Serializable {
 		this.alumnos.put(a, cal);
 	}
 
+	public void elimiarAlumno(Alumno a) {
+		alumnos.remove(a);
+	}
+
 	public int getParcial() {
 		return parcial;
 	}

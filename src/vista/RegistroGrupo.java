@@ -18,6 +18,8 @@ import modelo.Docente;
 import modelo.Docentes;
 import modelo.Grupo;
 import modelo.Grupos;
+import modelo.Parciales;
+import modelo.Utileria;
 
 public class RegistroGrupo extends JDialog {
 
@@ -28,8 +30,11 @@ public class RegistroGrupo extends JDialog {
 	private JComboBox<Docente> comboDocente;
 	private DefaultComboBoxModel<Docente> modelDocentes;
 	private Docentes docentes;
+	private Docente docente;
+	private JComboBox<Integer> comboParciales;
 
-	public RegistroGrupo(Grupos grupos) {
+	public RegistroGrupo(Grupos grupos, Docentes docentes) {
+		this.docentes = docentes;
 		modelDocentes = new DefaultComboBoxModel<Docente>();
 		this.grupos = grupos;
 
@@ -63,6 +68,11 @@ public class RegistroGrupo extends JDialog {
 		}
 		{
 			comboDocente = new JComboBox<>();
+			comboDocente.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					setDocente();
+				}
+			});
 			contentPanel.add(comboDocente);
 		}
 		{
@@ -70,7 +80,7 @@ public class RegistroGrupo extends JDialog {
 			contentPanel.add(lblCantidadDeParciales);
 		}
 		{
-			JComboBox<Integer> comboParciales = new JComboBox<>();
+			comboParciales = new JComboBox<>();
 			comboParciales.setModel(
 					new DefaultComboBoxModel<>(new Integer[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 }));
 			contentPanel.add(comboParciales);
@@ -83,6 +93,11 @@ public class RegistroGrupo extends JDialog {
 				JButton okButton = new JButton("OK");
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
+						if (validarGrupo()) {
+							registrarGrupo();
+							Utileria.mensaje("Grupo Registrado");
+							RegistroGrupo.this.dispose();
+						}
 					}
 				});
 				okButton.setActionCommand("OK");
@@ -101,27 +116,39 @@ public class RegistroGrupo extends JDialog {
 			}
 		}
 		llenarDocentes();
+		setLocationRelativeTo(null);
 	}
 
-	public void setDocentes(Docentes docentes) {
-		this.docentes = docentes;
-	}
-
-	private void validarGrupo() {
+	private boolean validarGrupo() {
 		if (grupos.existeGrupo(comboGrado.getSelectedIndex() + 1, comboLetra.getSelectedItem().toString().charAt(0))) {
-
+			Utileria.mensaje("Grupo ya registrado");
+			return false;
 		}
+		return true;
 	}
 
 	private void registrarGrupo() {
-		Grupo grupo = new Grupo();
+		grupos.agregarGrupo(getGrupo());
+	}
 
+	public Grupo getGrupo() {
+		Grupo g = new Grupo();
+		g.setDocente(docente);
+		g.setLetra(comboLetra.getItemAt(comboLetra.getSelectedIndex()));
+		Parciales p = new Parciales(comboParciales.getSelectedIndex() + 1);
+		g.setParciales(p);
+		g.setSemestre(comboGrado.getSelectedIndex() + 1);
+		return g;
+	}
+
+	private void setDocente() {
+		docente = (Docente) comboDocente.getSelectedItem();
 	}
 
 	private void llenarDocentes() {
 		comboDocente.setModel(modelDocentes);
 		for (Docente d : docentes.getDocentes()) {
-			modelDocentes.addElement(d.getNombreCompleto());
+			modelDocentes.addElement(d);
 		}
 	}
 

@@ -48,38 +48,4 @@ public class Alumno extends Persona implements Serializable {
 		return "Alumno [matricula=" + matricula + ", grupo=" + grupo + "]";
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = super.hashCode();
-		result = prime * result + ((grupo == null) ? 0 : grupo.hashCode());
-		result = prime * result + matricula;
-		result = prime * result + ((status == null) ? 0 : status.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (!super.equals(obj))
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Alumno other = (Alumno) obj;
-		if (grupo == null) {
-			if (other.grupo != null)
-				return false;
-		} else if (!grupo.equals(other.grupo))
-			return false;
-		if (matricula != other.matricula)
-			return false;
-		if (status == null) {
-			if (other.status != null)
-				return false;
-		} else if (!status.equals(other.status))
-			return false;
-		return true;
-	}
-
 }

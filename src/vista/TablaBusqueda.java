@@ -46,7 +46,7 @@ public class TablaBusqueda extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public TablaBusqueda() {
+	public TablaBusqueda(boolean withGroup) {
 		setBorder(new TitledBorder(null, "Consulta", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		setLayout(new BorderLayout(0, 0));
 
@@ -61,7 +61,8 @@ public class TablaBusqueda extends JPanel {
 		panel_1.setLayout(new GridLayout(0, 1, 0, 0));
 
 		panel_2 = new JPanel();
-		panel_1.add(panel_2);
+		if (withGroup)
+			panel_1.add(panel_2);
 
 		lblGrupo = new JLabel("Grupo:");
 		panel_2.add(lblGrupo);

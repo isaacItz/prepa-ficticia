@@ -18,7 +18,6 @@ public class Grupo implements Serializable {
 
 	public Grupo(Docente docente, List<Alumno> alumnos, int semestre, char letra) {
 		super();
-		this.parciales = new Parciales();
 		this.docente = docente;
 		this.alumnos = alumnos;
 		this.semestre = semestre;
@@ -28,9 +27,23 @@ public class Grupo implements Serializable {
 	public boolean existeAlumno(Alumno a) {
 		return alumnos.contains(a);
 	}
-	
+
 	public boolean dadoDeBaja(Alumno a) {
 		return a.getStatus().equals("Baja");
+	}
+
+	public void eliminarAlumno(Alumno a) {
+		alumnos.remove(a);
+		parciales.eliminarAlumno(a);
+	}
+
+	public int getAlumno(int matricula) {
+		for (int i = 0; i < alumnos.size(); i++) {
+			if (alumnos.get(i).getMatricula() == matricula) {
+				return i;
+			}
+		}
+		return -1;
 	}
 
 	public Parciales getParciales() {

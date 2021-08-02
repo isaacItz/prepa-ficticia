@@ -27,7 +27,7 @@ public class BusquedaDocente extends JDialog {
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(new BorderLayout(0, 0));
-		tabla = new TablaBusqueda();
+		tabla = new TablaBusqueda(false);
 		tabla.setTablaDocentes(this.docentes);
 		tabla.setEtiquetaTexto("Busqueda:");
 

@@ -13,8 +13,10 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import modelo.Alumno;
+import modelo.Alumnos;
 import modelo.Grupo;
 import modelo.Grupos;
+import modelo.Utileria;
 
 public class BusquedaAlumnos extends JDialog {
 
@@ -24,11 +26,13 @@ public class BusquedaAlumnos extends JDialog {
 	private JComboBox<Grupo> comboGrupo;
 	private DefaultComboBoxModel<Grupo> model;
 	private Grupo grupo;
+	private Alumnos alumnos;
 
-	public BusquedaAlumnos(Grupos grupos) {
+	public BusquedaAlumnos(Grupos grupos, Alumnos alumnos) {
 		this.grupos = grupos;
+		this.alumnos = alumnos;
 		model = new DefaultComboBoxModel<>();
-		tabla = new TablaBusqueda();
+		tabla = new TablaBusqueda(true);
 		comboGrupo = tabla.getComboGrupo();
 		comboGrupo.setModel(model);
 		llenarModelo();
@@ -50,7 +54,7 @@ public class BusquedaAlumnos extends JDialog {
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				JButton okButton = new JButton("OK");
+				JButton okButton = new JButton("Modificar Alumno");
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
 						modAlumno();
@@ -76,6 +80,7 @@ public class BusquedaAlumnos extends JDialog {
 
 	private void setGrupo() {
 		grupo = (Grupo) comboGrupo.getSelectedItem();
+		tabla.setTablaAlumnos(grupo);
 	}
 
 	private void llenarModelo() {
@@ -85,9 +90,11 @@ public class BusquedaAlumnos extends JDialog {
 	private void modAlumno() {
 		if (tabla.hayFilaSeleccionada()) {
 			Alumno a = tabla.getAlumnoSeleccionado();
-			RegistroAlumno modA = new RegistroAlumno(grupos, true);
+			RegistroAlumno modA = new RegistroAlumno(grupos, alumnos, true);
 			modA.setAlumno(a);
 			modA.setVisible(true);
+		} else {
+			Utileria.mensaje("No hay algun alumno seleccionado");
 		}
 	}
 }
