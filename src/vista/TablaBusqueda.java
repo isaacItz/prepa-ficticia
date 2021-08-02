@@ -133,23 +133,29 @@ public class TablaBusqueda extends JPanel {
 	}
 
 	public void setTablaAlumnos(Grupo grupo) {
-		this.grupo = grupo;
-		List<String[]> mat = new ArrayList<>();
-		int columns = 7;
-		for (Alumno a : grupo.getAlumnos()) {
-			String[] fila = new String[columns];
-			fila[0] = String.valueOf(a.getMatricula());
-			fila[1] = a.getStatus();
-			fila[2] = a.getNombreCompleto();
-			fila[3] = a.getCurp();
-			fila[4] = Utileria.formatearFecha(a.getFechaNac());
-			fila[5] = String.valueOf(a.getSexo());
-			fila[6] = a.getGrupo().getNombreGrupo();
-			mat.add(fila);
+		if (grupo.getAlumnos().size() > 0) {
+			this.grupo = grupo;
+			List<String[]> mat = new ArrayList<>();
+			int columns = 7;
+			for (Alumno a : grupo.getAlumnos()) {
+				String[] fila = new String[columns];
+				fila[0] = String.valueOf(a.getMatricula());
+				fila[1] = a.getStatus();
+				fila[2] = a.getNombreCompleto();
+				fila[3] = a.getCurp();
+				fila[4] = Utileria.formatearFecha(a.getFechaNac());
+				fila[5] = String.valueOf(a.getSexo());
+				fila[6] = a.getGrupo().getNombreGrupo();
+				mat.add(fila);
+			}
+			int rows = mat.size();
+			iniciarTabla(rows, columns, mat.toArray(new String[rows][columns]),
+					new String[] { "Matricula", "Status", "Nombre", "CURP", "Fecha Nac.", "Sexo", "Grupo" });
+		} else {
+
+			Utileria.mensaje("No hay alumnos");
 		}
-		int rows = mat.size();
-		iniciarTabla(rows, columns, mat.toArray(new String[rows][columns]),
-				new String[] { "Matricula", "Status", "Nombre", "CURP", "Fecha Nac.", "Sexo", "Grupo" });
+
 	}
 
 	public void setTablaCalificaciones(Grupo grupo) {
@@ -166,7 +172,11 @@ public class TablaBusqueda extends JPanel {
 			fila[5] = String.valueOf(a.getSexo());
 			fila[6] = a.getGrupo().getNombreGrupo();
 			for (int i = 7; i < columns; i++) {
-				fila[i] = 0;
+				Parcial p = grupo.getParciales().getParcial(i - 6);
+				if (p.existeCalf(a))
+					fila[i] = p.getCalf(a);
+				else
+					fila[i] = "";
 			}
 			mat.add(fila);
 		}
@@ -233,10 +243,14 @@ public class TablaBusqueda extends JPanel {
 		for (int i = 0; i < modelo.getRowCount(); i++) {
 			ArrayList<Double> fila = new ArrayList<>();
 			for (int j = 0; j < grupo.getParciales().getCantidad(); j++) {
-				if (!Utileria.esDouble(table.getValueAt(i, 7 + j)) && Utileria.getDecimal() < 0) {
-					return false;
+				if (table.getValueAt(i, 7 + j).toString().isEmpty()) {
+					fila.add(null);
 				} else {
-					fila.add(Utileria.getDecimal());
+					if (!Utileria.esDouble(table.getValueAt(i, 7 + j)) && Utileria.getDecimal() < 0) {
+						return false;
+					} else {
+						fila.add(Utileria.getDecimal());
+					}
 				}
 			}
 			listaCalificaciones.add(fila.toArray(new Double[fila.size()]));
@@ -246,11 +260,19 @@ public class TablaBusqueda extends JPanel {
 
 	public void registrarCalificaciones() {
 		Iterator<Double[]> it = listaCalificaciones.iterator();
-		for (Parcial p : grupo.getParciales().getEvaluaciones()) {
-			List<Alumno> alumnos = grupo.getAlumnos();
+		List<Alumno> alumnos = grupo.getAlumnosDeAlta();
+		for (int i = 0; i < alumnos.size(); i++) {
 			Double[] calfs = it.next();
-			for (int i = 0; i < alumnos.size(); i++) {
-				p.setCalificacion(alumnos.get(i), calfs[i]);
+			for (int j = 0; j < calfs.length; j++) {
+				if (calfs[j] != null) {
+					Parcial p = grupo.getParciales().getEvaluaciones().get(j);
+					System.out.println(calfs[j]);
+					if (p.existeCalf(alumnos.get(i))) {
+						p.actualizarCalificacion(alumnos.get(i), calfs[j]);
+					} else {
+						p.setCalificacion(alumnos.get(i), calfs[j]);
+					}
+				}
 			}
 		}
 	}

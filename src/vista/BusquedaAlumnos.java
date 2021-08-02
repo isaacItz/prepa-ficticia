@@ -93,8 +93,13 @@ public class BusquedaAlumnos extends JDialog {
 			RegistroAlumno modA = new RegistroAlumno(grupos, alumnos, true);
 			modA.setAlumno(a);
 			modA.setVisible(true);
+			refrescarTabla();
 		} else {
 			Utileria.mensaje("No hay algun alumno seleccionado");
 		}
+	}
+
+	private void refrescarTabla() {
+		setGrupo();
 	}
 }

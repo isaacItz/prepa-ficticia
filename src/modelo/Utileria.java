@@ -97,6 +97,7 @@ public class Utileria {
 	public static int getEntero() {
 		return entero;
 	}
+
 	public static boolean esDouble(Object o) {
 		try {
 			decimal = Double.parseDouble(o.toString());
@@ -109,6 +110,7 @@ public class Utileria {
 	public static double getDecimal() {
 		return decimal;
 	}
+
 	public static boolean validarEntero(JTextField caja) {
 		try {
 			Integer.parseInt(caja.getText());
@@ -137,6 +139,14 @@ public class Utileria {
 
 	public static boolean validarCajaFecha(JDateChooser dateChooser) {
 		return toLocalDate(dateChooser.getDate()).isBefore(LocalDate.now());
+	}
+
+	public static boolean validarFecha(JDateChooser dateChooser) {
+		return dateChooser.getDate() != null;
+	}
+
+	public static boolean esFechaFutura(JDateChooser dateChooser) {
+		return toLocalDate(dateChooser.getDate()).isAfter(LocalDate.now());
 	}
 
 	public static LocalDate toLocalDate(Date date) {

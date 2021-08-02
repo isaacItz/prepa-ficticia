@@ -74,6 +74,16 @@ public class Grupo implements Serializable {
 		return alumnos;
 	}
 
+	public List<Alumno> getAlumnosDeAlta() {
+		List<Alumno> lista = new ArrayList<>();
+		for (Alumno a : alumnos) {
+			if (a.getStatus().equals("Alta")) {
+				lista.add(a);
+			}
+		}
+		return lista;
+	}
+
 	public void setAlumnos(List<Alumno> alumnos) {
 		this.alumnos = alumnos;
 	}
@@ -100,7 +110,7 @@ public class Grupo implements Serializable {
 
 	@Override
 	public String toString() {
-		return getNombreGrupo().concat(" Docente: ").concat(getDocente().getNombre())
+		return getNombreGrupo().concat(" Docente: ").concat(getDocente().getNombreCompleto())
 				.concat(" Alumnos: ".concat(String.valueOf(alumnos.size())));
 	}
 

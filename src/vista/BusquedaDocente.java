@@ -44,7 +44,7 @@ public class BusquedaDocente extends JDialog {
 							RegistroDocente modDoc = new RegistroDocente(tabla.getDocenteSeleccionado());
 							modDoc.setTitle("Modificacion de Docente");
 							modDoc.setVisible(true);
-
+							refrescarTabla();
 						} else {
 							Utileria.mensaje("No hay un docente seleccionado");
 						}
@@ -67,4 +67,7 @@ public class BusquedaDocente extends JDialog {
 		}
 	}
 
+	private void refrescarTabla() {
+		tabla.setTablaDocentes(this.docentes);
+	}
 }

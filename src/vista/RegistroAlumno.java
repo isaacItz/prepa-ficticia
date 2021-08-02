@@ -197,6 +197,11 @@ public class RegistroAlumno extends JDialog {
 			grupo.agregarAlumno(alumno);
 			formPersona.modPersona(alumno);
 			alumno.setGrupo(grupo);
+			if (radioAlta.isSelected()) {
+				alumno.setStatus("Alta");
+			} else {
+				alumno.setStatus("Baja");
+			}
 			Utileria.mensaje("Alumno modificado");
 			RegistroAlumno.this.dispose();
 

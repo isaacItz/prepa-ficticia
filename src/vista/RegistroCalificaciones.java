@@ -80,6 +80,7 @@ public class RegistroCalificaciones extends JDialog {
 
 	private void setGrupo() {
 		grupo = (Grupo) comboGrupo.getSelectedItem();
+		tabla.setTablaCalificaciones(grupo);
 	}
 
 	private void llenarModelo() {

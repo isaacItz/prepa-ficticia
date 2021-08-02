@@ -32,13 +32,13 @@ public class RegistroDocente extends JDialog {
 
 	private void init() {
 		setModal(true);
-		setBounds(100, 100, 532, 407);
+		setBounds(100, 100, 650, 407);
 
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
-			getContentPane().add(buttonPane, BorderLayout.SOUTH);
+			getContentPane().add(buttonPane, BorderLayout.SOUTH);	
 			{
 				JButton okButton = new JButton("OK");
 				okButton.addActionListener(new ActionListener() {

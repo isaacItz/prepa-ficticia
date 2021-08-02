@@ -16,6 +16,18 @@ public class Parcial implements Serializable {
 		this.alumnos.put(a, cal);
 	}
 
+	public void actualizarCalificacion(Alumno a, double cal) {
+		this.alumnos.replace(a, cal);
+	}
+
+	public double getCalf(Alumno a) {
+		return alumnos.get(a);
+	}
+
+	public boolean existeCalf(Alumno a) {
+		return alumnos.containsKey(a);
+	}
+
 	public void elimiarAlumno(Alumno a) {
 		alumnos.remove(a);
 	}
