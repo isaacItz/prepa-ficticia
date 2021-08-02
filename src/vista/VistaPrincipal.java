@@ -18,6 +18,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import modelo.Adeudos;
 import modelo.Alumnos;
 import modelo.CiclosEscolares;
 import modelo.Docentes;
@@ -33,6 +34,7 @@ public class VistaPrincipal extends JFrame {
 	private Alumnos alumnos;
 	private Docentes docentes;
 	private CiclosEscolares ciclosEscolares;
+	private Adeudos adeudos;
 
 	/**
 	 * Launch the application.
@@ -60,6 +62,7 @@ public class VistaPrincipal extends JFrame {
 			this.docentes = new Docentes();
 			this.ciclosEscolares = new CiclosEscolares();
 			this.alumnos = new Alumnos();
+			this.adeudos = new Adeudos();
 			System.err.println("no se pudieron cargar los datos");
 		}
 
@@ -195,9 +198,39 @@ public class VistaPrincipal extends JFrame {
 		menuBar.add(mnAdeudos);
 
 		JMenuItem mntmRegistrar_1 = new JMenuItem("Registrar");
+		mntmRegistrar_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if (grupos.hayGrupos()) {
+					if (grupos.hayAlumnos()) {
+						RegistroAdeudos regAdeu = new RegistroAdeudos(grupos, adeudos, false);
+						regAdeu.setVisible(true);
+
+					} else {
+						Utileria.mensaje("No hay Alumnos registrados");
+					}
+				} else {
+					Utileria.mensaje("No hay grupos registrados;");
+				}
+			}
+		});
 		mnAdeudos.add(mntmRegistrar_1);
 
 		JMenuItem mntmConsultar_2 = new JMenuItem("Consultar");
+		mntmConsultar_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if (grupos.hayGrupos()) {
+					if (grupos.hayAlumnos()) {
+						RegistroAdeudos regAdeu = new RegistroAdeudos(grupos, adeudos, true);
+						regAdeu.setVisible(true);
+
+					} else {
+						Utileria.mensaje("No hay Alumnos registrados");
+					}
+				} else {
+					Utileria.mensaje("No hay grupos registrados;");
+				}
+			}
+		});
 		mnAdeudos.add(mntmConsultar_2);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -214,6 +247,7 @@ public class VistaPrincipal extends JFrame {
 				crearStream("docentes", docentes);
 				crearStream("alumnos", alumnos);
 				crearStream("ciclosEscolares", ciclosEscolares);
+				crearStream("adeudos", adeudos);
 				System.out.println("bye");
 				System.exit(0);
 
@@ -258,6 +292,7 @@ public class VistaPrincipal extends JFrame {
 		docentes = leerStream("docentes", docentes);
 		ciclosEscolares = leerStream("ciclosEscolares", ciclosEscolares);
 		alumnos = leerStream("alumnos", alumnos);
+		adeudos = leerStream("adeudos", adeudos);
 		if (docentes == null)
 			return false;
 		if (grupos == null)

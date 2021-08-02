@@ -27,7 +27,7 @@ import modelo.Grupo;
 import modelo.Grupos;
 import modelo.Utileria;
 
-public class RegistroAdeudos extends JDialog {
+public class ConsultaAdeudos extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
 	private TablaBusqueda tabla;
@@ -45,7 +45,7 @@ public class RegistroAdeudos extends JDialog {
 	private Grupos grupos;
 	private Adeudos adeudos;
 
-	public RegistroAdeudos(Grupos grupos, Adeudos adeudos, boolean consultar) {
+	public ConsultaAdeudos(Grupos grupos, Adeudos adeudos) {
 		tabla = new TablaBusqueda(true);
 		this.adeudos = adeudos;
 		this.grupos = grupos;
@@ -69,8 +69,8 @@ public class RegistroAdeudos extends JDialog {
 
 		{
 			JPanel panel = new JPanel();
-			contentPanel.add(panel);
 			contentPanel.add(tabla);
+			contentPanel.add(panel);
 			panel.setLayout(new GridLayout(0, 1, 0, 0));
 			{
 				JLabel lblNombre = new JLabel("Nombre:");
@@ -140,7 +140,7 @@ public class RegistroAdeudos extends JDialog {
 						if (validar()) {
 							adeudos.agregarAdeudo(getAdeudo());
 							Utileria.mensaje("Adeudo añadido");
-							RegistroAdeudos.this.dispose();
+							ConsultaAdeudos.this.dispose();
 						}
 					}
 				});
@@ -164,19 +164,17 @@ public class RegistroAdeudos extends JDialog {
 		setLocationRelativeTo(null);
 		comboGrupo.setSelectedIndex(0);
 		setGrupo();
-		if (consultar) {
-			contentPanel.add(panelpago);
-			setBounds(100, 100, 700, 530);
-			tablaAdeudos = new TablaBusqueda(false);
-			tablaAdeudos.setTablaAdeudos(adeudos);
-			tablaAdeudos.getTable().getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+		contentPanel.add(panelpago);
+		setBounds(100, 100, 700, 530);
+		tablaAdeudos = new TablaBusqueda(false);
+		tablaAdeudos.setTablaAdeudos(adeudos);
+		tablaAdeudos.getTable().getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 
-				@Override
-				public void valueChanged(ListSelectionEvent arg0) {
-					tabla.setTablaAdeudo(tablaAdeudos.adeudoSeleccionado());
-				}
-			});
-		}
+			@Override
+			public void valueChanged(ListSelectionEvent arg0) {
+				tabla.setTablaAdeudo(tablaAdeudos.adeudoSeleccionado());
+			}
+		});
 	}
 
 	private boolean validar() {

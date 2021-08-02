@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.regex.PatternSyntaxException;
 
 import javax.swing.JComboBox;
@@ -22,6 +23,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
+import modelo.Adeudo;
+import modelo.Adeudos;
 import modelo.Alumno;
 import modelo.Docente;
 import modelo.Docentes;
@@ -42,6 +45,8 @@ public class TablaBusqueda extends JPanel {
 	private JLabel lblGrupo;
 	private JComboBox<Grupo> comboGrupo;
 	private List<Double[]> listaCalificaciones;
+	private Adeudos adeudos;
+	private JScrollPane scrollPane;
 
 	/**
 	 * Create the panel.
@@ -50,7 +55,7 @@ public class TablaBusqueda extends JPanel {
 		setBorder(new TitledBorder(null, "Consulta", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		setLayout(new BorderLayout(0, 0));
 
-		JScrollPane scrollPane = new JScrollPane();
+		scrollPane = new JScrollPane();
 		add(scrollPane, BorderLayout.CENTER);
 
 		table = new JTable();
@@ -190,6 +195,73 @@ public class TablaBusqueda extends JPanel {
 		iniciarTabla(rows, columns, mat.toArray(new Object[rows][columns]), columnas.toArray());
 	}
 
+	public void setTablaAdeudos(Grupo grupo) {
+		this.grupo = grupo;
+		List<Object[]> mat = new ArrayList<>();
+		int columns = 8;
+		for (Alumno a : grupo.getAlumnosDeAlta()) {
+			Object[] fila = new Object[columns];
+			fila[0] = String.valueOf(a.getMatricula());
+			fila[1] = a.getStatus();
+			fila[2] = a.getNombreCompleto();
+			fila[3] = a.getCurp();
+			fila[4] = Utileria.formatearFecha(a.getFechaNac());
+			fila[5] = String.valueOf(a.getSexo());
+			fila[6] = a.getGrupo().getNombreGrupo();
+			fila[7] = false;
+			mat.add(fila);
+		}
+		List<String> lista = Arrays.asList(
+				new String[] { "Matricula", "Status", "Nombre", "CURP", "Fecha Nac.", "Sexo", "Grupo", "Seleccion" });
+		int rows = mat.size();
+		iniciarTabla(rows, columns, mat.toArray(new Object[rows][columns]), lista.toArray());
+	}
+
+	public void setTablaAdeudo(Adeudo adeudo) {
+		List<Object[]> mat = new ArrayList<>();
+		int columns = 8;
+		for (Entry<Alumno, Boolean> a : adeudo.getAlumnos().entrySet()) {
+			Object[] fila = new Object[columns];
+			fila[0] = String.valueOf(a.getKey().getMatricula());
+			fila[1] = a.getKey().getStatus();
+			fila[2] = a.getKey().getNombreCompleto();
+			fila[3] = a.getKey().getCurp();
+			fila[4] = Utileria.formatearFecha(a.getKey().getFechaNac());
+			fila[5] = String.valueOf(a.getKey().getSexo());
+			fila[6] = a.getKey().getGrupo().getNombreGrupo();
+			fila[7] = a.getValue();
+			mat.add(fila);
+		}
+		List<String> lista = Arrays.asList(
+				new String[] { "Matricula", "Status", "Nombre", "CURP", "Fecha Nac.", "Sexo", "Grupo", "Pagado" });
+		int rows = mat.size();
+		iniciarTabla(rows, columns, mat.toArray(new Object[rows][columns]), lista.toArray());
+	}
+
+	public Adeudo adeudoSeleccionado() {
+		return adeudos.getAdeudos().get(getFilaSeleccionada());
+	}
+
+	public void setTablaAdeudos(Adeudos adeudos) {
+		this.adeudos = adeudos;
+		List<Object[]> mat = new ArrayList<>();
+		int columns = 6;
+		for (Adeudo d : adeudos.getAdeudos()) {
+			Object[] fila = new Object[columns];
+			fila[0] = d.getNombre();
+			fila[1] = d.getDescripcion();
+			fila[2] = d.getFecha();
+			fila[3] = d.getCosto();
+			fila[4] = d.getPagados();
+			fila[5] = d.getNoPagados();
+			mat.add(fila);
+		}
+		List<String> lista = Arrays
+				.asList(new String[] { "Nombre", "Descripcion", "Fecha", "Costo", "Pagados", "No pagados" });
+		int rows = mat.size();
+		iniciarTabla(rows, columns, mat.toArray(new Object[rows][columns]), lista.toArray());
+	}
+
 	public void iniciarTabla(int rows, int cols, Object[][] data, Object[] cabecera) {
 		modelo = new DefaultTableModel(rows, cols) {
 			public Class getColumnClass(int column) {
@@ -275,6 +347,24 @@ public class TablaBusqueda extends JPanel {
 				}
 			}
 		}
+	}
+
+	public List<Alumno> getAlumnosSeleccionados() {
+		List<Alumno> alumnos = new ArrayList<>();
+		for (int i = 0; i < table.getRowCount(); i++) {
+			if ((boolean) table.getValueAt(i, 8)) {
+				alumnos.add(grupo.getAlumnos().get(i));
+			}
+		}
+		return alumnos;
+	}
+
+	public JTable getTable() {
+		return table;
+	}
+
+	public void setTable(JTable table) {
+		this.table = table;
 	}
 
 	public JComboBox<Grupo> getComboGrupo() {

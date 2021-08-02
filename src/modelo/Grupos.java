@@ -19,6 +19,14 @@ public class Grupos implements Serializable {
 		return grupos.size() > 0;
 	}
 
+	public List<Alumno> getAlumnos() {
+		List<Alumno> lista = new ArrayList<>();
+		for (Grupo g : grupos) {
+			lista.addAll(g.getAlumnos());
+		}
+		return lista;
+	}
+
 	public boolean existeAlumno(Alumno a) {
 		for (Grupo g : grupos) {
 			if (g.existeAlumno(a)) {
