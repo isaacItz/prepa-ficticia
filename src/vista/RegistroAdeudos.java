@@ -211,6 +211,7 @@ public class RegistroAdeudos extends JDialog {
 		Utileria.esDouble(cajaCosto);
 		a.setCosto(Utileria.getDecimal());
 		if (checkTodos.isSelected()) {
+			a.setAlumnos(grupos.getAlumnos());
 		} else if (checkGrupo.isSelected()) {
 			a.setGrupo(grupo);
 		} else {

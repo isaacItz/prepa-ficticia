@@ -220,7 +220,7 @@ public class VistaPrincipal extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				if (grupos.hayGrupos()) {
 					if (grupos.hayAlumnos()) {
-						RegistroAdeudos regAdeu = new RegistroAdeudos(grupos, adeudos, true);
+						ConsultaAdeudos regAdeu = new ConsultaAdeudos(grupos, adeudos);
 						regAdeu.setVisible(true);
 
 					} else {

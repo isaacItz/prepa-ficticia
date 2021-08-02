@@ -19,6 +19,8 @@ import javax.swing.RowFilter;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
@@ -30,6 +32,7 @@ import modelo.Docente;
 import modelo.Docentes;
 import modelo.Grupo;
 import modelo.Parcial;
+import modelo.Persona;
 import modelo.Utileria;
 
 public class TablaBusqueda extends JPanel {
@@ -46,6 +49,7 @@ public class TablaBusqueda extends JPanel {
 	private JComboBox<Grupo> comboGrupo;
 	private List<Double[]> listaCalificaciones;
 	private Adeudos adeudos;
+	private Adeudo adeudo;
 	private JScrollPane scrollPane;
 
 	/**
@@ -218,9 +222,13 @@ public class TablaBusqueda extends JPanel {
 	}
 
 	public void setTablaAdeudo(Adeudo adeudo) {
+		this.adeudo = adeudo;
 		List<Object[]> mat = new ArrayList<>();
+		List<Alumno> pers = new ArrayList<>();
+
 		int columns = 8;
 		for (Entry<Alumno, Boolean> a : adeudo.getAlumnos().entrySet()) {
+			pers.add(a.getKey());
 			Object[] fila = new Object[columns];
 			fila[0] = String.valueOf(a.getKey().getMatricula());
 			fila[1] = a.getKey().getStatus();
@@ -232,6 +240,13 @@ public class TablaBusqueda extends JPanel {
 			fila[7] = a.getValue();
 			mat.add(fila);
 		}
+		table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+
+			@Override
+			public void valueChanged(ListSelectionEvent arg0) {
+				getPersonaAdeudoSeleccionado(pers);
+			}
+		});
 		List<String> lista = Arrays.asList(
 				new String[] { "Matricula", "Status", "Nombre", "CURP", "Fecha Nac.", "Sexo", "Grupo", "Pagado" });
 		int rows = mat.size();
@@ -291,6 +306,11 @@ public class TablaBusqueda extends JPanel {
 
 	public Docente getDocenteSeleccionado() {
 		return docentes.getDocentes().get(getFilaSeleccionada());
+	}
+
+	public void getPersonaAdeudoSeleccionado(List<Alumno> alumnos) {
+		boolean dato = (boolean) table.getValueAt(getFilaSeleccionada(), 7);
+		adeudo.setAlumno(alumnos.get(getFilaSeleccionada()), dato);
 	}
 
 	public Alumno getAlumnoSeleccionado() {
@@ -369,5 +389,9 @@ public class TablaBusqueda extends JPanel {
 
 	public JComboBox<Grupo> getComboGrupo() {
 		return comboGrupo;
+	}
+
+	public void setBorder(String text) {
+		setBorder(new TitledBorder(null, text, TitledBorder.LEADING, TitledBorder.TOP, null, null));
 	}
 }
